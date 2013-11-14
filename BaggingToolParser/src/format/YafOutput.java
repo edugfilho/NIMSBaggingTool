@@ -23,7 +23,7 @@ public class YafOutput extends FlowOutput {
 	}
 
 	@Override
-	public String setFieldValueFromFile(ArrayList<ArrayList<String>> rawData) {
+	public String setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

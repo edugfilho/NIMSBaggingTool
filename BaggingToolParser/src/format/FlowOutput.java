@@ -44,9 +44,9 @@ public abstract class FlowOutput {
 	}
 
 
-	public ArrayList<ArrayList<String>> getRawDataFromFile(File file,
+	public ArrayList<Flow> getRawDataFromFile(File file,
 			String splitToken) {
-		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+		ArrayList<Flow> data = new ArrayList<Flow>();
 		BufferedReader br;
 
 		try {
@@ -54,7 +54,7 @@ public abstract class FlowOutput {
 			String line;
 			int i = 0;
 			while ((line = br.readLine()) != null) {
-				data.add(i, new ArrayList<String>());
+				data.add(i, new Flow());
 				StringTokenizer st = new StringTokenizer(line, splitToken);
 				int j = 0;
 				while (st.hasMoreElements()) {
@@ -76,6 +76,14 @@ public abstract class FlowOutput {
 
 	public abstract String preProcessField(String fieldName);
 
-	public abstract String setFieldValueFromFile(ArrayList<ArrayList<String>> rawData);
+	public abstract String setOutputFlowsFromRawData(ArrayList<Flow> rawData);
+	
+	public class Flow extends ArrayList<String>{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+	}
 }

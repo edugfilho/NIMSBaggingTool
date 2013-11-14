@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 
+import format.FlowOutput.Flow;
 import format.NetmateOutput;
 
 public class Main {
@@ -11,17 +12,24 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		File f = new File(
-				"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
+				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 		//Field[] fields = FeaturesConsts.class.getFields();
 		NetmateOutput netOut = new NetmateOutput();
-		ArrayList<ArrayList<String>> rawData = netOut.getRawDataFromFile(f, ",");
+		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f, ",");
 
-		for (ArrayList<String> arrayList : rawData) {
+		/*for (ArrayList<String> arrayList : rawData) {
+			System.out.println("");
 			for (String string : arrayList) {
-				System.out.println(string);
+				System.out.print(string+" ");
+			}
+		}*/
+		netOut.setOutputFlowsFromRawData(rawData);
+		for (Flow flow : netOut.getOutputFlows()) {
+			System.out.println("");
+			for (String string : flow) {
+				System.out.print(string+" ");
 			}
 		}
-		
 
 	}
 
