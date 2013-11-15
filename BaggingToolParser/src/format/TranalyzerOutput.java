@@ -1,7 +1,5 @@
 package format;
 
-import java.util.ArrayList;
-
 import bagging.feature.FeaturesConsts;
 
 public class TranalyzerOutput extends FlowOutput {
@@ -33,12 +31,6 @@ public class TranalyzerOutput extends FlowOutput {
 
 	@Override
 	public String preProcessField(String fieldName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

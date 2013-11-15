@@ -1,7 +1,5 @@
 package format;
 
-import java.util.ArrayList;
-
 import bagging.feature.FeaturesConsts;
 
 public class SoftflowdOutput extends FlowOutput {
@@ -30,9 +28,4 @@ public class SoftflowdOutput extends FlowOutput {
 		return null;
 	}
 
-	@Override
-	public String setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

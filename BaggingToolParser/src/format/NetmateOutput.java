@@ -1,13 +1,8 @@
 package format;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import bagging.feature.FeaturesConsts;
 
 public class NetmateOutput extends FlowOutput {
-
-	ArrayList<Flow> outputFlows;
 
 	public NetmateOutput() {
 		super();
@@ -51,40 +46,11 @@ public class NetmateOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowHeaderFwdTotalSz, 42);
 		featuresPresent.put(FeaturesConsts.flowHeaderBwdTotalSz, 43);
 
-		outputFlows = new ArrayList<Flow>();
-
 	}
 
 	@Override
 	public String preProcessField(String fieldName) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
-		int rawIndex = 0;
-		int featIndex = 0;
-		for (Flow flow : rawData) {
-			outputFlows.add(featIndex, new Flow());
-			//System.out.println("outputflows size:" + outputFlows.size());
-			rawIndex = 0;
-			for (String featValue : flow) {
-				if(featuresPresent.containsValue(rawIndex)){
-					outputFlows.get(featIndex).add(featValue);
-				}
-				rawIndex++;
-			}
-			featIndex++;
-		}
-		return null;
-	}
-
-	public ArrayList<Flow> getOutputFlows() {
-		return outputFlows;
-	}
-
-	public void setOutputFlows(ArrayList<Flow> outputFlows) {
-		this.outputFlows = outputFlows;
 	}
 }

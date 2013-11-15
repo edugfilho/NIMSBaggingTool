@@ -17,6 +17,8 @@ public abstract class FlowOutput {
 	public static String TRUE = "true";
 	public static Integer FALSE = -1;
 
+	private ArrayList<Flow> outputFlows;
+	
 	public FlowOutput() {
 		featuresPresent = new HashMap<String, Integer>();
 
@@ -33,6 +35,7 @@ public abstract class FlowOutput {
 
 			featuresPresent.put(s, FALSE);
 		}
+		outputFlows = new ArrayList<Flow>();
 	}
 
 	public HashMap<String, Integer> getFeaturesPresent() {
@@ -73,11 +76,26 @@ public abstract class FlowOutput {
 
 		return data;
 	}
+	
+	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData){
+		int rawIndex = 0;
+		int featIndex = 0;
+		for (Flow flow : rawData) {
+			outputFlows.add(featIndex, new Flow());
+			//System.out.println("outputflows size:" + outputFlows.size());
+			rawIndex = 0;
+			for (String featValue : flow) {
+				if(featuresPresent.containsValue(rawIndex)){
+					outputFlows.get(featIndex).add(featValue);
+				}
+				rawIndex++;
+			}
+			featIndex++;
+		}
+	}
 
 	public abstract String preProcessField(String fieldName);
 
-	public abstract String setOutputFlowsFromRawData(ArrayList<Flow> rawData);
-	
 	public class Flow extends ArrayList<String>{
 
 		/**
@@ -85,5 +103,13 @@ public abstract class FlowOutput {
 		 */
 		private static final long serialVersionUID = 1L;
 		
+	}
+
+	public ArrayList<Flow> getOutputFlows() {
+		return outputFlows;
+	}
+
+	public void setOutputFlows(ArrayList<Flow> outputFlows) {
+		this.outputFlows = outputFlows;
 	}
 }
