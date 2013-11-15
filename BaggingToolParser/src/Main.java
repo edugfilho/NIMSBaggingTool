@@ -1,13 +1,11 @@
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Calendar;
+import java.util.Map.Entry;
 
+import database.BaggingToolDatabase;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
 
@@ -16,62 +14,30 @@ public class Main {
 	/**
 	 * @param args
 	 */
+
 	public static void main(String[] args) {
+
+		BaggingToolDatabase db = new BaggingToolDatabase();
+
 		// TODO Auto-generated method stub
-/*		File f = new File(
+		File f = new File(
 				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 		NetmateOutput netOut = new NetmateOutput();
 		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f, ",");
 
 		netOut.setOutputFlowsFromRawData(rawData);
-		for (Flow flow : netOut.getOutputFlows()) {
-			System.out.println("");
-			for (String string : flow) {
-				System.out.print(string + " ");
-			}
-		}*/
 
-		Connection con = null;
-		Statement st = null;
-		ResultSet rs = null;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		netOut.setOutputName(netOut.getClass().toString()
+				+ dateFormat.format(cal.getTime()).toString());
+		db.saveOutputToDatabase(netOut);
+		
+		/*
+		 * for (Flow flow : netOut.getOutputFlows()) { System.out.println("");
+		 * for (String string : flow) { System.out.print(string + " "); } }
+		 */
 
-		String url = "jdbc:mysql://localhost:3306/test";
-		String user = "nims";
-		String password = "nimslabpass";
-
-		try {
-			con = DriverManager.getConnection(url, user, password);
-			st = con.createStatement();
-			rs = st.executeQuery("SELECT * from names");
-			
-
-			while (rs.next()) {
-				System.out.println(rs.getString(2));
-			}
-			int a = st.executeUpdate("SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root')");
-			int b = st.executeUpdate("GRANT ALL ON * TO 'root'@'localhost'");
-			System.out.println(a);
-		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(Main.class.getName());
-			lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (st != null) {
-					st.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(Main.class.getName());
-				lgr.log(Level.WARNING, ex.getMessage(), ex);
-			}
-		}
 	}
 
 }

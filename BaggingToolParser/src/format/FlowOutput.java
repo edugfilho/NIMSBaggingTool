@@ -18,7 +18,9 @@ public abstract class FlowOutput {
 	public static Integer FALSE = -1;
 
 	private ArrayList<Flow> outputFlows;
-	
+	//TODO: Name must be always different between outputs
+	private String outputName;
+
 	public FlowOutput() {
 		featuresPresent = new HashMap<String, Integer>();
 
@@ -46,9 +48,7 @@ public abstract class FlowOutput {
 		this.featuresPresent = featuresPresent;
 	}
 
-
-	public ArrayList<Flow> getRawDataFromFile(File file,
-			String splitToken) {
+	public ArrayList<Flow> getRawDataFromFile(File file, String splitToken) {
 		ArrayList<Flow> data = new ArrayList<Flow>();
 		BufferedReader br;
 
@@ -76,16 +76,16 @@ public abstract class FlowOutput {
 
 		return data;
 	}
-	
-	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData){
+
+	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
 		int rawIndex = 0;
 		int featIndex = 0;
 		for (Flow flow : rawData) {
 			outputFlows.add(featIndex, new Flow());
-			//System.out.println("outputflows size:" + outputFlows.size());
+			// System.out.println("outputflows size:" + outputFlows.size());
 			rawIndex = 0;
 			for (String featValue : flow) {
-				if(featuresPresent.containsValue(rawIndex)){
+				if (featuresPresent.containsValue(rawIndex)) {
 					outputFlows.get(featIndex).add(featValue);
 				}
 				rawIndex++;
@@ -96,13 +96,13 @@ public abstract class FlowOutput {
 
 	public abstract String preProcessField(String fieldName);
 
-	public class Flow extends ArrayList<String>{
+	public class Flow extends ArrayList<String> {
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		
+
 	}
 
 	public ArrayList<Flow> getOutputFlows() {
@@ -111,5 +111,13 @@ public abstract class FlowOutput {
 
 	public void setOutputFlows(ArrayList<Flow> outputFlows) {
 		this.outputFlows = outputFlows;
+	}
+
+	public String getOutputName() {
+		return outputName;
+	}
+
+	public void setOutputName(String outputName) {
+		this.outputName = outputName;
 	}
 }
