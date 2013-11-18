@@ -48,7 +48,8 @@ public abstract class FlowOutput {
 		this.featuresPresent = featuresPresent;
 	}
 
-	public ArrayList<Flow> getRawDataFromFile(File file, String splitToken) {
+	public ArrayList<Flow> getRawDataFromFile(File file) {
+		String splitToken = getSeparator();
 		ArrayList<Flow> data = new ArrayList<Flow>();
 		BufferedReader br;
 
@@ -119,5 +120,16 @@ public abstract class FlowOutput {
 
 	public void setOutputName(String outputName) {
 		this.outputName = outputName;
+	}
+	
+	public abstract String getSeparator();
+	
+	public void printOutFlows(){
+		for (Flow flow : outputFlows) {
+			System.out.println("");
+			for (String string : flow) {
+				System.out.print(string+"\t");
+			}
+		}
 	}
 }

@@ -53,4 +53,9 @@ public class NetmateOutput extends FlowOutput {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getSeparator() {
+		return ",";
+	}
 }

@@ -35,4 +35,9 @@ public class TranalyzerOutput extends FlowOutput {
 		return null;
 	}
 
+	@Override
+	public String getSeparator() {
+		return "";
+	}
+
 }

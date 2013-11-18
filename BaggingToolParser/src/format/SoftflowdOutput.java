@@ -28,4 +28,10 @@ public class SoftflowdOutput extends FlowOutput {
 		return null;
 	}
 
+	@Override
+	public String getSeparator() {
+		
+		return "";
+	}
+
 }

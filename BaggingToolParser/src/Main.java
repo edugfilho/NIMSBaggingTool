@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import database.BaggingToolDatabase;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
+import format.YafOutput;
 
 public class Main {
 
@@ -19,11 +20,23 @@ public class Main {
 
 		BaggingToolDatabase db = new BaggingToolDatabase();
 
-		// TODO Auto-generated method stub
+		
+		//YAF TESTS
 		File f = new File(
+				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
+		YafOutput yafOut = new YafOutput();
+		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
+
+		yafOut.setOutputFlowsFromRawData(rawData);
+		yafOut.printOutFlows();
+		
+		
+		
+		//NETMATE TESTS
+		/*File f = new File(
 				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 		NetmateOutput netOut = new NetmateOutput();
-		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f, ",");
+		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
 
 		netOut.setOutputFlowsFromRawData(rawData);
 
@@ -31,7 +44,7 @@ public class Main {
 		Calendar cal = Calendar.getInstance();
 		netOut.setOutputName(netOut.getClass().toString()
 				+ dateFormat.format(cal.getTime()).toString());
-		db.saveOutputToDatabase(netOut);
+		db.saveOutputToDatabase(netOut);*/
 		
 		/*
 		 * for (Flow flow : netOut.getOutputFlows()) { System.out.println("");

@@ -27,13 +27,25 @@ public class BaggingToolDatabase {
 
 	}
 
+	public String getAllValidFeatures(FlowOutput output) {
+		String insertFlows = "";
+		for (Entry<String, Integer> entry : Util.entriesSortedByValues(output
+				.getFeaturesPresent())) {
+
+			if (entry.getValue() != FlowOutput.FALSE) {
+				insertFlows += entry.getKey() + ", ";
+			}
+		}
+		insertFlows += "Output_id)";
+		return insertFlows;
+	}
+
 	public void saveOutputToDatabase(FlowOutput output) {
 
 		Statement st = null;
 		ResultSet rs = null;
 		String insertOutput = "INSERT INTO output (OutputName, ToolName) VALUES ( '"
 				+ output.getOutputName() + "'";
-		
 
 		try {
 			connect();
@@ -43,37 +55,26 @@ public class BaggingToolDatabase {
 				st = con.createStatement();
 				st.executeUpdate(insertOutput);
 				rs = st.executeQuery("SELECT output_id from output WHERE OutputName LIKE '"
-				 + output.getOutputName()+"'");
+						+ output.getOutputName() + "'");
 				String recentOutputId = "";
-				 
-				  if(rs.next()){ 
-					  recentOutputId = rs.getString(1);
-					  System.out.println("ok, netmate: " + recentOutputId); 
-				  }
-				 
 
-				for (Flow flow : output.getOutputFlows()) {
-					String insertFlows = "INSERT INTO flows (";
-					
-					for (Entry<String, Integer> entry : Util
-							.entriesSortedByValues(output.getFeaturesPresent())) {
-
-						if (entry.getValue() != FlowOutput.FALSE) {
-							insertFlows += entry.getKey() + ", ";
-						}
-					}
-					insertFlows += "Output_id)";
-							
-					insertFlows += " VALUES (";
-
-					for (String string : flow) {
-						insertFlows += "'" + string + "', ";
-					}
-					insertFlows += "'"+recentOutputId+"')";
-					st.executeUpdate(insertFlows);
-					//System.out.println(insertFlows);
+				if (rs.next()) {
+					recentOutputId = rs.getString(1);
+					System.out.println("ok, netmate: " + recentOutputId);
 				}
 				
+				String insertFlows1 = "INSERT INTO flows (" + getAllValidFeatures(output) + " VALUES (";
+				
+				for (Flow flow : output.getOutputFlows()) {
+					String insertFlows2 = "";
+					for (String string : flow) {
+						insertFlows2 += "'" + string + "', ";
+					}
+					insertFlows2 += "'" + recentOutputId + "')";
+					st.executeUpdate(insertFlows1 + insertFlows2);
+					// System.out.println(insertFlows);
+				}
+
 			}
 			if (output.getClass() == YafOutput.class) {
 				System.out.println("eeh yaf!");
