@@ -153,7 +153,9 @@ public abstract class FlowOutput {
 			 */
 
 			if (entry.getValue() != FALSE && entry.getValue() < f.size()) {
-				String processedFeatValue = preProcessField(entry.getKey(), f);
+				
+				//Removes all non-visible characters from field value (YAF has some nasty tab)
+				String processedFeatValue = preProcessField(entry.getKey().replaceAll("\\s+",""), f);
 				index = entry.getValue();
 				if (processedFeatValue == null) {
 					return Boolean.FALSE;

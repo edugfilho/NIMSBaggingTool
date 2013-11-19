@@ -48,9 +48,9 @@ public class YafOutput extends FlowOutput {
 		Integer flowIndex = featuresPresent.get(fieldName);
 		String featureContent = f.get(flowIndex);
 
-		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)) {
-			// Remove IPV6 flows
-			if (featureContent.contains(":")) {
+		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr) || fieldName.equals(FeaturesConsts.flowDstIpAddr)) {
+			// Remove IPV6 flows and invalid ip address
+			if (featureContent.contains(":") || featureContent.contains("0.0.0.0")) {
 				return null;
 			}
 		}

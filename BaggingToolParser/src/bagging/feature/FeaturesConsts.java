@@ -81,7 +81,7 @@ public class FeaturesConsts {
 	public static final String flowEndTime = "EndTime";
 	public static final String flowRtt = "Rtt";
 	public static final String flowSrcMacAddr = "SrcMacAddr";
-	public static final String flowDestMacAddr = "SrcDestAddr";
+	public static final String flowDestMacAddr = "DestMacAddr";
 	public static final String flowFwdIflags = "FwdIflags";
 	public static final String flowBwdIflags = "BwdIflags";
 	public static final String flowFwdUflags = "FwdUflags";

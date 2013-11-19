@@ -31,14 +31,17 @@ public class BaggingToolDatabase {
 
 	}
 
-	public String getAllValidFeatures(FlowOutput output) {
+	public String getAllValidFeatures(FlowOutput output, int numFeatures) {
 		String insertFlows = "";
+		int index = 0;
 		for (Entry<String, Integer> entry : Util.entriesSortedByValues(output
 				.getFeaturesPresent())) {
 
-			if (entry.getValue() != FlowOutput.FALSE) {
+			if (entry.getValue() != FlowOutput.FALSE && index < numFeatures) {
 				insertFlows += entry.getKey() + ", ";
+				index++;
 			}
+			
 		}
 		insertFlows += "Output_id)";
 		return insertFlows;
@@ -55,34 +58,34 @@ public class BaggingToolDatabase {
 			connect();
 			if (output.getClass() == NetmateOutput.class) {
 				insertOutput = insertOutput + ", 'Netmate')";
-
-				st = con.createStatement();
-				st.executeUpdate(insertOutput);
-				rs = st.executeQuery("SELECT output_id from output WHERE OutputName LIKE '"
-						+ output.getOutputName() + "'");
-				String recentOutputId = "";
-
-				if (rs.next()) {
-					recentOutputId = rs.getString(1);
-					System.out.println("ok, netmate: " + recentOutputId);
-				}
-
-				String insertFlows1 = "INSERT INTO flows ("
-						+ getAllValidFeatures(output) + " VALUES (";
-
-				for (Flow flow : output.getOutputFlows()) {
-					String insertFlows2 = "";
-					for (String string : flow) {
-						insertFlows2 += "'" + string + "', ";
-					}
-					insertFlows2 += "'" + recentOutputId + "')";
-					st.executeUpdate(insertFlows1 + insertFlows2);
-					// System.out.println(insertFlows);
-				}
-
 			}
 			if (output.getClass() == YafOutput.class) {
-				System.out.println("eeh yaf!");
+				insertOutput = insertOutput + ", 'YAF')";
+			}
+
+			st = con.createStatement();
+			st.executeUpdate(insertOutput);
+			rs = st.executeQuery("SELECT output_id from output WHERE OutputName LIKE '"
+					+ output.getOutputName() + "'");
+			String recentOutputId = "";
+
+			if (rs.next()) {
+				recentOutputId = rs.getString(1);
+				// System.out.println("ok, netmate: " + recentOutputId);
+			}
+
+			
+
+			for (Flow flow : output.getOutputFlows()) {
+				String insertFlows1 = "INSERT INTO flows ("
+						+ getAllValidFeatures(output, flow.size()) + " VALUES (";
+				String insertFlows2 = "";
+				for (String string : flow) {
+					insertFlows2 += "'" + string + "', ";
+				}
+				insertFlows2 += "'" + recentOutputId + "')";
+				st.executeUpdate(insertFlows1 + insertFlows2);
+				// System.out.println(insertFlows);
 			}
 
 			// st = con.createStatement();
@@ -116,7 +119,7 @@ public class BaggingToolDatabase {
 	public String performQueries(String query) {
 		Statement st = null;
 		ResultSet rs = null;
-		String result = null;
+		String result = "";
 
 		try {
 			connect();
@@ -127,7 +130,7 @@ public class BaggingToolDatabase {
 				for (int i = 1; i <= columns; i++) {
 					result += rs.getString(i) + ", ";
 				}
-				System.out.println();
+				result += "\n";
 
 			}
 		} catch (SQLException e) {
@@ -138,19 +141,12 @@ public class BaggingToolDatabase {
 	}
 
 	public void prepareAndExecuteQueries() {
-		String query1 = "SELECT * FROM flows ORDER BY "
-				+ FeaturesConsts.flowSrcIpAddr;
-		String query2 = "SELECT * FROM flows ORDER BY "
-				+ FeaturesConsts.flowSrcPort;
-		String query3 = "SELECT * FROM flows ORDER BY "
-				+ FeaturesConsts.flowSrcPort + ", "
-				+ FeaturesConsts.flowSrcIpAddr;
+		String query1 = "SELECT * FROM flows GROUP BY "
+				+ FeaturesConsts.flowSrcIpAddr+","+FeaturesConsts.flowSrcPort;
+
 
 		printToFile(performQueries(query1), "query1");
 
-		printToFile(performQueries(query2), "query2");
-
-		printToFile(performQueries(query3), "query3");
 	}
 
 	public void printToFile(String content, String fname) {

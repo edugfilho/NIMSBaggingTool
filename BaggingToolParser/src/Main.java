@@ -14,63 +14,84 @@ public class Main {
 	/**
 	 * @param args
 	 */
-
+	private static BaggingToolDatabase db = null;
 	public static void main(String[] args) {
-
+		
 		BaggingToolDatabase db = new BaggingToolDatabase();
+		db.prepareAndExecuteQueries();
 		//testNetmate();
-		testYaf();
+		//testYaf();
 
 	}
 
 	public static void testYaf() {
 		// YAF TESTS
-
+		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
-		//"/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
+				//"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
+		 "/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
 		YafOutput yafOut = new YafOutput();
 		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
 
 		yafOut.setOutputFlowsFromRawData(rawData);
-		yafOut.printOutFlows();
+		//yafOut.printOutFlows();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		yafOut.setOutputName(yafOut.getClass().toString()
+				+ dateFormat.format(cal.getTime()).toString());
+		db.saveOutputToDatabase(yafOut);
+
+		//db.saveOutputToDatabase(yafOut);
 
 	}
 
 	public static void testNetmate() {
 		// NETMATE TESTS
-
+		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
+		// "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 
-			//	"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
+				"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
 
 		NetmateOutput netOut = new NetmateOutput();
 		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
 
 		netOut.setOutputFlowsFromRawData(rawData);
-		netOut.printOutFlows();
-		/*
-		 * DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
-		 * Calendar cal = Calendar.getInstance();
-		 * netOut.setOutputName(netOut.getClass().toString() +
-		 * dateFormat.format(cal.getTime()).toString()); upstream
-		 * db.saveOutputToDatabase(netOut);
-		 */
+		//netOut.printOutFlows();
 
-		// db.saveOutputToDatabase(netOut);
-		// db.prepareAndExecuteQueries();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		netOut.setOutputName(netOut.getClass().toString()
+				+ dateFormat.format(cal.getTime()).toString());
+		db.saveOutputToDatabase(netOut);
+		//db.prepareAndExecuteQueries();
 	}
 }
 
 /*
- * TODO: why isn't the output coming out completely? something with the printer
+ * TODO: 
+ * Queries must take into consideration valid features!
+ * 
+ * why isn't the output coming out completely? something with the printer
+ * 
  * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
- * spec) get rid of it. softflowd "M" (mega) features YAF check ip addr (if it
- * has endtime it's ok) YAF: idle (or active when no duration ) means no
- * backwards data YAF: (icmp) [x:y] = port numbers YAF: flows that doesn't have
- * endtime: endtime = 0, duration = 0 Remove ipv6 add a class label after
- * bagging (we are assuming that every file will have only ONE label)
+ * spec) get rid of it.
+ * 
+ * softflowd "M" (mega) features
+ * 
+ * YAF check ip addr (if it has endtime it's ok)
+ * 
+ * YAF: idle (or active when no duration ) means no backwards data
+ * 
+ * YAF: (icmp) [x:y] = port numbers
+ * 
+ * YAF: flows that doesn't have endtime: endtime = 0, duration = 0
+ * 
+ * Remove ipv6
+ * 
+ * add a class label after bagging (we are assuming that every file will have
+ * only ONE label)
  * 
  * include all features in the database
  * 
