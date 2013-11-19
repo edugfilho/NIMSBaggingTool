@@ -56,7 +56,8 @@ public class YafOutput extends FlowOutput {
 		}
 		/*
 		 * YAF: idle (or active when no duration ) means no backwards data YAF:
-		 * (icmp) [x:y] = port numbers YAF: flows that doesn't have endtime:
+		 * (icmp) [x:y] = port numbers 
+		 * YAF: flows that doesn't have endtime:
 		 * endtime = 0, duration = 0 Remove ipv6
 		 */
 		return featureContent;

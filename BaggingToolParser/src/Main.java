@@ -63,7 +63,7 @@ public class Main {
 	}
 }
 
-/*TODO: add new fields to database, organize checklists!
+/*
  * TODO: why isn't the output coming out completely? something with the printer
  * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
  * spec) get rid of it. softflowd "M" (mega) features YAF check ip addr (if it
