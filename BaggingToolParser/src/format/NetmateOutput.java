@@ -1,6 +1,5 @@
 package format;
 
-import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class NetmateOutput extends FlowOutput {
@@ -47,6 +46,13 @@ public class NetmateOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowHeaderFwdTotalSz, 42);
 		featuresPresent.put(FeaturesConsts.flowHeaderBwdTotalSz, 43);
 		setUsedFeaturesWithCurrentPresentFeatures();
+		
+		//UNUSED FEATURES
+		featuresPresent.put(FeaturesConsts.flowPshFwdCount, 38);
+		featuresPresent.put(FeaturesConsts.flowPshBwdCount, 39);
+		featuresPresent.put(FeaturesConsts.flowUrgFwdCount, 40);
+		featuresPresent.put(FeaturesConsts.flowUrgBwdCount, 41);
+
 
 	}
 

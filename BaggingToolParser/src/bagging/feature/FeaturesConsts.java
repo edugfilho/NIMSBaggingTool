@@ -62,13 +62,43 @@ public class FeaturesConsts {
 	public static final String flowSubFlowAvgBwdSz ="SubFlowAvgBwdSz";
 	public static final String flowHeaderFwdTotalSz = "HeaderTotalFwdSz";
 	public static final String flowHeaderBwdTotalSz = "HeaderTotalBwdSz";
+	
+	//NOT USED NETMATE FEATURES
+	public static final String flowPshFwdCount = "PshFwdCount";
+	public static final String flowPshBwdCount = "PshBwdCount";
+	public static final String flowUrgFwdCount = "UrgFwdCount";
+	public static final String flowUrgBwdCount = "UrgBwdCount";
+
 	//SOFTFLOWD BASED FEATURES 
 	public static final String flowBytesPerSec = "BytesPerSec";
 	public static final String flowPktPerSec = "PktPerSec";
 	public static final String flowBytesPerPkt = "BytesPerPkt";
 	//YAF BASED FEATURES 
 	public static final String flowReverseFlowDeltaMiliseconds = "ReverseFlowDeltaMiliseconds";
-                                    
+    
+	//NOT USED YAF FEATURES
+	public static final String flowStartTime = "StartTime";
+	public static final String flowEndTime = "EndTime";
+	public static final String flowRtt = "Rtt";
+	public static final String flowSrcMacAddr = "SrcMacAddr";
+	public static final String flowDestMacAddr = "SrcDestAddr";
+	public static final String flowFwdIflags = "FwdIflags";
+	public static final String flowBwdIflags = "BwdIflags";
+	public static final String flowFwdUflags = "FwdUflags";
+	public static final String flowBwdUflags = "BwdUflags";
+	public static final String flowFwdIsn = "FwdIsn";
+	public static final String flowBwdIsn = "BwdIsn";
+	public static final String flowFwdTag = "FwdTag";
+	public static final String flowBwdTag = "BwdTag";
+	public static final String flowAppLabel = "AppLabel";
+	public static final String flowEndReason = "EndReason";
+
+
+
+
+
+	
+	
 	private FeaturesConsts(){
 		//this prevents even the native class from 
 	    //calling this ctor as well :

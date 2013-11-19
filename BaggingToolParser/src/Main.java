@@ -18,8 +18,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		BaggingToolDatabase db = new BaggingToolDatabase();
-		testNetmate();
-		//testYaf();
+		//testNetmate();
+		testYaf();
 
 	}
 
@@ -27,8 +27,8 @@ public class Main {
 		// YAF TESTS
 
 		File f = new File(
-
-		"/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
+				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
+		//"/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
 		YafOutput yafOut = new YafOutput();
 		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
 
@@ -41,9 +41,9 @@ public class Main {
 		// NETMATE TESTS
 
 		File f = new File(
-		// "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 
-				"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
+			//	"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
 
 		NetmateOutput netOut = new NetmateOutput();
 		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
@@ -63,10 +63,10 @@ public class Main {
 	}
 }
 
-/*
+/*TODO: add new fields to database, organize checklists!
  * TODO: why isn't the output coming out completely? something with the printer
  * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
- * spec) get rid of it softflowd "M" (mega) features YAF check ip addr (if it
+ * spec) get rid of it. softflowd "M" (mega) features YAF check ip addr (if it
  * has endtime it's ok) YAF: idle (or active when no duration ) means no
  * backwards data YAF: (icmp) [x:y] = port numbers YAF: flows that doesn't have
  * endtime: endtime = 0, duration = 0 Remove ipv6 add a class label after

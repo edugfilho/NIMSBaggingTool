@@ -1,24 +1,44 @@
 package format;
 
-import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class YafOutput extends FlowOutput {
 
 	public YafOutput() {
 		featuresPresent.put(FeaturesConsts.flowDuration, 2);
+
+		featuresPresent.put(FeaturesConsts.flowRtt, 3);
+
 		featuresPresent.put(FeaturesConsts.flowProtocol, 4);
 		featuresPresent.put(FeaturesConsts.flowSrcIpAddr, 5);
 		featuresPresent.put(FeaturesConsts.flowSrcPort, 6);
 		featuresPresent.put(FeaturesConsts.flowDstIpAddr, 7);
 		featuresPresent.put(FeaturesConsts.flowDstPort, 8);
-		featuresPresent.put(FeaturesConsts.flowTotalFwdPkt, 20);
-		featuresPresent.put(FeaturesConsts.flowTotalBwdPkt, 22);
-		featuresPresent.put(FeaturesConsts.flowTotalFwdSz, 21);
-		featuresPresent.put(FeaturesConsts.flowTotalBwdSz, 23);
+		featuresPresent.put(FeaturesConsts.flowTotalFwdPkt, 19);
+		featuresPresent.put(FeaturesConsts.flowTotalBwdPkt, 21);
+		featuresPresent.put(FeaturesConsts.flowTotalFwdSz, 20);
+		featuresPresent.put(FeaturesConsts.flowTotalBwdSz, 22);
 		// featuresPresent.put(FeaturesConsts.flowReverseFlowDeltaMiliseconds,
 		// 0);
 		setUsedFeaturesWithCurrentPresentFeatures();
+
+		//Not used features
+
+		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
+		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
+		featuresPresent.put(FeaturesConsts.flowRtt, 3);
+		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 9);
+		featuresPresent.put(FeaturesConsts.flowDestMacAddr, 10);
+		featuresPresent.put(FeaturesConsts.flowFwdIflags, 11);
+		featuresPresent.put(FeaturesConsts.flowFwdUflags, 12);
+		featuresPresent.put(FeaturesConsts.flowBwdIflags, 13);
+		featuresPresent.put(FeaturesConsts.flowBwdUflags, 14);
+		featuresPresent.put(FeaturesConsts.flowFwdIsn, 15);
+		featuresPresent.put(FeaturesConsts.flowBwdIsn, 16);
+		featuresPresent.put(FeaturesConsts.flowBwdTag, 17);
+		featuresPresent.put(FeaturesConsts.flowTotalBwdSz, 18);
+		featuresPresent.put(FeaturesConsts.flowAppLabel, 23);
+		featuresPresent.put(FeaturesConsts.flowEndReason, 24);
 
 	}
 
@@ -27,10 +47,10 @@ public class YafOutput extends FlowOutput {
 
 		Integer flowIndex = featuresPresent.get(fieldName);
 		String featureContent = f.get(flowIndex);
-		
-		if(fieldName.equals(FeaturesConsts.flowSrcIpAddr)){
-			//Remove IPV6 flows
-			if(featureContent.contains(":")){
+
+		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)) {
+			// Remove IPV6 flows
+			if (featureContent.contains(":")) {
 				return null;
 			}
 		}

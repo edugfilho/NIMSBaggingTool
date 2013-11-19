@@ -11,10 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.print.attribute.standard.PresentationDirection;
-
-import format.FlowOutput.Flow;
-
 import bagging.feature.FeaturesConsts;
 
 public abstract class FlowOutput {
@@ -156,7 +152,7 @@ public abstract class FlowOutput {
 			 * the flow by entry.getValue().
 			 */
 
-			if (entry.getValue() != FALSE) {
+			if (entry.getValue() != FALSE && entry.getValue() < f.size()) {
 				String processedFeatValue = preProcessField(entry.getKey(), f);
 				index = entry.getValue();
 				if (processedFeatValue == null) {
@@ -206,6 +202,7 @@ public abstract class FlowOutput {
 			for (String string : flow) {
 				System.out.print(string + "\t");
 			}
+
 		}
 	}
 }
