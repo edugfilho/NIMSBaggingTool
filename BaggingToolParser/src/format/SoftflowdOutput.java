@@ -1,5 +1,6 @@
 package format;
 
+import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class SoftflowdOutput extends FlowOutput {
@@ -16,6 +17,7 @@ public class SoftflowdOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowPktPerSec, 0);
 		featuresPresent.put(FeaturesConsts.flowBytesPerSec, 0);
 		featuresPresent.put(FeaturesConsts.flowBytesPerPkt, 0);
+		setUsedFeaturesWithCurrentPresentFeatures();
 
 
 
@@ -23,7 +25,7 @@ public class SoftflowdOutput extends FlowOutput {
 	}
 
 	@Override
-	public String preProcessField(String fieldName) {
+	public String preProcessField(String fieldName, Flow f) {
 		// TODO Auto-generated method stub
 		return null;
 	}

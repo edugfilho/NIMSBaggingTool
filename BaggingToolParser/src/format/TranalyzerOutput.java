@@ -1,5 +1,6 @@
 package format;
 
+import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class TranalyzerOutput extends FlowOutput {
@@ -27,10 +28,11 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowMedianIAT, 0);
 		featuresPresent.put(FeaturesConsts.flowRangeIAT, 0);
 		featuresPresent.put(FeaturesConsts.flowStdIAT, 0);
+		setUsedFeaturesWithCurrentPresentFeatures();
 	}
 
 	@Override
-	public String preProcessField(String fieldName) {
+	public String preProcessField(String fieldName, Flow f) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -39,5 +41,6 @@ public class TranalyzerOutput extends FlowOutput {
 	public String getSeparator() {
 		return "";
 	}
+
 
 }

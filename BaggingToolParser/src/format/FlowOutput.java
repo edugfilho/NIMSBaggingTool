@@ -8,21 +8,40 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
+
+import javax.print.attribute.standard.PresentationDirection;
+
+import format.FlowOutput.Flow;
 
 import bagging.feature.FeaturesConsts;
 
 public abstract class FlowOutput {
+
+	/*
+	 * featuresPresent maps a feature name and the position from where to get
+	 * the feature value inside a flow (positions are separated by a given
+	 * separator, different in each output).
+	 * 
+	 * featuresUsed contains the name of the features that are going to be used
+	 * in the bagging process.
+	 * 
+	 * If a feature is inside "featuresPresent" but not in "featuresUses", it
+	 * means that that feature is part of an output but is not considered in the
+	 * bagging process.
+	 */
 	protected HashMap<String, Integer> featuresPresent;
-	public static String TRUE = "true";
-	public static Integer FALSE = -1;
+	protected ArrayList<String> featuresUsed;
+	public static Integer FALSE = Integer.MIN_VALUE;
 
 	private ArrayList<Flow> outputFlows;
-	//TODO: Name must be always different between outputs
+	// TODO: Name must be always different between outputs
 	private String outputName;
 
 	public FlowOutput() {
 		featuresPresent = new HashMap<String, Integer>();
+		featuresUsed = new ArrayList<String>();
 
 		Field[] fields = FeaturesConsts.class.getFields();
 		for (Field field : fields) {
@@ -38,6 +57,16 @@ public abstract class FlowOutput {
 			featuresPresent.put(s, FALSE);
 		}
 		outputFlows = new ArrayList<Flow>();
+	}
+
+	/*
+	 * This method sets usedFeatures with the features contained in the actual
+	 * state of presentFeatures
+	 */
+	public void setUsedFeaturesWithCurrentPresentFeatures() {
+		for (Map.Entry<String, Integer> entry : featuresPresent.entrySet()) {
+			featuresUsed.add(entry.getKey());
+		}
 	}
 
 	public HashMap<String, Integer> getFeaturesPresent() {
@@ -79,23 +108,70 @@ public abstract class FlowOutput {
 	}
 
 	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
+
+		// RawIndex means the position of a given feature inside a flow.
 		int rawIndex = 0;
-		int featIndex = 0;
-		for (Flow flow : rawData) {
-			outputFlows.add(featIndex, new Flow());
-			// System.out.println("outputflows size:" + outputFlows.size());
+
+		// FeatIndex is the position of a flow inside the outputFlows
+		// int featIndex = 0;
+		for (Flow rawFlow : rawData) {
+			Flow tempFlow = new Flow();
 			rawIndex = 0;
-			for (String featValue : flow) {
-				if (featuresPresent.containsValue(rawIndex)) {
-					outputFlows.get(featIndex).add(featValue);
+
+			if (processRawFlow(rawFlow)) {
+
+				// At this point, rawFlow has modified pre-processed values. It
+				// only needs to be out of undesired feature values, the ones
+				// not
+				// specified for the output in question.
+				for (String featValue : rawFlow) {
+
+					if (featuresPresent.containsValue(rawIndex)) {
+						tempFlow.add(featValue);
+
+						// outputFlows.get(featIndex).add(featValue);
+					}
+					rawIndex++;
 				}
-				rawIndex++;
+				outputFlows.add(tempFlow);
+				// featIndex++;
 			}
-			featIndex++;
+
 		}
 	}
 
-	public abstract String preProcessField(String fieldName);
+	/* Do not ever call this function over a non-raw flow. I'm counting on it. */
+	public Boolean processRawFlow(Flow f) {
+		// Boolean flowOk = Boolean.TRUE;
+
+		// The number of entries in featurePresent matches the size of the flow
+		// "f". Because of that, we can iterate over the "featuresPresent" and
+		// increment "index" for "f" after each iteration on "featuresPresent".
+		int index = 0;
+		for (Map.Entry<String, Integer> entry : featuresPresent.entrySet()) {
+
+			/*
+			 * Make sure I'm only processing valid fields. featuresPresent is
+			 * not ordered but it doesn't matter since we get the index inside
+			 * the flow by entry.getValue().
+			 */
+
+			if (entry.getValue() != FALSE) {
+				String processedFeatValue = preProcessField(entry.getKey(), f);
+				index = entry.getValue();
+				if (processedFeatValue == null) {
+					return Boolean.FALSE;
+				} else {
+					f.set(index, processedFeatValue);
+				}
+			}
+			
+		}
+
+		return Boolean.TRUE;
+	}
+
+	public abstract String preProcessField(String fieldName, Flow f);
 
 	public class Flow extends ArrayList<String> {
 
@@ -121,14 +197,14 @@ public abstract class FlowOutput {
 	public void setOutputName(String outputName) {
 		this.outputName = outputName;
 	}
-	
+
 	public abstract String getSeparator();
-	
-	public void printOutFlows(){
+
+	public void printOutFlows() {
 		for (Flow flow : outputFlows) {
 			System.out.println("");
 			for (String string : flow) {
-				System.out.print(string+"\t");
+				System.out.print(string + "\t");
 			}
 		}
 	}

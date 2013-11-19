@@ -1,5 +1,6 @@
 package format;
 
+import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class NetmateOutput extends FlowOutput {
@@ -45,11 +46,12 @@ public class NetmateOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowSubFlowAvgBwdSz, 37);
 		featuresPresent.put(FeaturesConsts.flowHeaderFwdTotalSz, 42);
 		featuresPresent.put(FeaturesConsts.flowHeaderBwdTotalSz, 43);
+		setUsedFeaturesWithCurrentPresentFeatures();
 
 	}
 
 	@Override
-	public String preProcessField(String fieldName) {
+	public String preProcessField(String fieldName, Flow f) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -57,5 +59,11 @@ public class NetmateOutput extends FlowOutput {
 	@Override
 	public String getSeparator() {
 		return ",";
+	}
+
+	@Override
+	public Boolean processRawFlow(Flow f) {
+		//For Netmate is all ok so far. Faster than checking every field.
+		return true;
 	}
 }

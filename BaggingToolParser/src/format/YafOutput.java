@@ -1,5 +1,6 @@
 package format;
 
+import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class YafOutput extends FlowOutput {
@@ -15,23 +16,36 @@ public class YafOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowTotalBwdPkt, 22);
 		featuresPresent.put(FeaturesConsts.flowTotalFwdSz, 21);
 		featuresPresent.put(FeaturesConsts.flowTotalBwdSz, 23);
-		//featuresPresent.put(FeaturesConsts.flowReverseFlowDeltaMiliseconds, 0);
+		// featuresPresent.put(FeaturesConsts.flowReverseFlowDeltaMiliseconds,
+		// 0);
+		setUsedFeaturesWithCurrentPresentFeatures();
 
 	}
 
 	@Override
-	public String preProcessField(String fieldName) {
-		/*YAF: idle (or active when no duration ) means no
-		 * backwards data YAF: (icmp) [x:y] = port numbers YAF: flows that doesn't have
-		 * endtime: endtime = 0, duration = 0 Remove ipv6
-		 * */
-		return null;
+	public String preProcessField(String fieldName, Flow f) {
+
+		Integer flowIndex = featuresPresent.get(fieldName);
+		String featureContent = f.get(flowIndex);
+		
+		if(fieldName.equals(FeaturesConsts.flowSrcIpAddr)){
+			//Remove IPV6 flows
+			if(featureContent.contains(":")){
+				return null;
+			}
+		}
+		/*
+		 * YAF: idle (or active when no duration ) means no backwards data YAF:
+		 * (icmp) [x:y] = port numbers YAF: flows that doesn't have endtime:
+		 * endtime = 0, duration = 0 Remove ipv6
+		 */
+		return featureContent;
 	}
 
 	@Override
 	public String getSeparator() {
 		return "|";
-		
+
 	}
 
 }
