@@ -82,6 +82,11 @@ public abstract class FlowOutput {
 			br = new BufferedReader(new FileReader(file));
 			String line;
 			int i = 0;
+			while (i < ignoreLines()) {
+				line = br.readLine();
+				i++;
+			}
+			i = 0;
 			while ((line = br.readLine()) != null) {
 				data.add(i, new Flow());
 				StringTokenizer st = new StringTokenizer(line, splitToken);
@@ -136,9 +141,20 @@ public abstract class FlowOutput {
 		}
 	}
 
+	// Can be overridden by an output to give it a chance to modify a raw flow
+	// before this flow is processed, for example, Softflowd uses it to
+	// rearrange feature values inside a flow. If this method return null the
+	// whole flow is ignored
+	public Flow beforeProcessingRawFlow(Flow f) {
+		return f;
+	}
+
 	/* Do not ever call this function over a non-raw flow. I'm counting on it. */
 	public Boolean processRawFlow(Flow f) {
-		// Boolean flowOk = Boolean.TRUE;
+		f = beforeProcessingRawFlow(f);
+		if (f == null) {
+			return Boolean.FALSE;
+		}
 
 		// The number of entries in featurePresent matches the size of the flow
 		// "f". Because of that, we can iterate over the "featuresPresent" and
@@ -149,13 +165,12 @@ public abstract class FlowOutput {
 			/*
 			 * Make sure I'm only processing valid fields. featuresPresent is
 			 * not ordered but it doesn't matter since we get the index inside
-			 * the flow by entry.getValue().
+			 * the flow by entry.getValue() in a non sequential way.
 			 */
 
 			if (entry.getValue() != FALSE && entry.getValue() < f.size()) {
-				
-				//Removes all non-visible characters from field value (YAF has some nasty tab)
-				String processedFeatValue = preProcessField(entry.getKey().replaceAll("\\s+",""), f);
+
+				String processedFeatValue = preProcessField(entry.getKey(), f);
 				index = entry.getValue();
 				if (processedFeatValue == null) {
 					return Boolean.FALSE;
@@ -163,7 +178,7 @@ public abstract class FlowOutput {
 					f.set(index, processedFeatValue);
 				}
 			}
-			
+
 		}
 
 		return Boolean.TRUE;
@@ -197,6 +212,13 @@ public abstract class FlowOutput {
 	}
 
 	public abstract String getSeparator();
+
+	// Can be overridden in case output has useless lines in the beginning of
+	// the
+	// file
+	public Integer ignoreLines() {
+		return 0;
+	}
 
 	public void printOutFlows() {
 		for (Flow flow : outputFlows) {

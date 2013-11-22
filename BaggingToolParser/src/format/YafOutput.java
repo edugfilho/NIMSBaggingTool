@@ -22,7 +22,7 @@ public class YafOutput extends FlowOutput {
 		// 0);
 		setUsedFeaturesWithCurrentPresentFeatures();
 
-		//Not used features
+		// Not used features
 
 		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
 		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
@@ -46,19 +46,29 @@ public class YafOutput extends FlowOutput {
 	public String preProcessField(String fieldName, Flow f) {
 
 		Integer flowIndex = featuresPresent.get(fieldName);
-		String featureContent = f.get(flowIndex);
+		String featureContent = f.get(flowIndex).replaceAll("\\s+","");
 
 		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr) || fieldName.equals(FeaturesConsts.flowDstIpAddr)) {
-			// Remove IPV6 flows and invalid ip address
+			// Remove IPV6 and invalid ip address flows
 			if (featureContent.contains(":") || featureContent.contains("0.0.0.0")) {
 				return null;
 			}
+		}else if (fieldName.equals(FeaturesConsts.flowEndTime)){
+			if(featureContent.isEmpty()){
+				return "0";
+			}
+			//If endtime = 0, duration = 0
+		}else if (fieldName.equals(FeaturesConsts.flowDuration)){
+			if(preProcessField(FeaturesConsts.flowEndTime, f).contentEquals("0")){
+				return "0";
+			}
 		}
+		
 		/*
-		 * YAF: idle (or active when no duration ) means no backwards data YAF:
+		 * YAF: idle (or active when no duration ) means no backwards data 
+		 * 
+		 * YAF:
 		 * (icmp) [x:y] = port numbers 
-		 * YAF: flows that doesn't have endtime:
-		 * endtime = 0, duration = 0 Remove ipv6
 		 */
 		return featureContent;
 	}

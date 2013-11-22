@@ -145,15 +145,16 @@ public class BaggingToolDatabase {
 				+ FeaturesConsts.flowSrcIpAddr+","+FeaturesConsts.flowSrcPort;
 
 
-		printToFile(performQueries(query1), "query1");
+		printToFile(performQueries(query1), "query1.txt");
 
 	}
 
 	public void printToFile(String content, String fname) {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter("/home/eduardo/NIMSBaggingTool/output"
-					+ fname, "UTF-8");
+			writer = new PrintWriter("C:/Users/Eduardo/Documents/NIMS/baggingTool/Output"
+					+ fname, "UTF-8");//"/home/eduardo/NIMSBaggingTool/output"
+					//+ fname, "UTF-8");
 			writer.println(content);
 			writer.close();
 		} catch (FileNotFoundException e) {

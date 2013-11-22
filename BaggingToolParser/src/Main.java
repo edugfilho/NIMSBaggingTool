@@ -7,6 +7,7 @@ import java.util.Calendar;
 import database.BaggingToolDatabase;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
+import format.SoftflowdOutput;
 import format.YafOutput;
 
 public class Main {
@@ -18,9 +19,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		BaggingToolDatabase db = new BaggingToolDatabase();
-		db.prepareAndExecuteQueries();
+		//db.prepareAndExecuteQueries();
 		//testNetmate();
 		//testYaf();
+		testSoftflowd();
 
 	}
 
@@ -28,8 +30,8 @@ public class Main {
 		// YAF TESTS
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-				//"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
-		 "/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
+				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
+		 //"/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
 		YafOutput yafOut = new YafOutput();
 		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
 
@@ -50,9 +52,9 @@ public class Main {
 		// NETMATE TESTS
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-		// "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
 
-				"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
+				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
 
 		NetmateOutput netOut = new NetmateOutput();
 		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
@@ -67,13 +69,40 @@ public class Main {
 		db.saveOutputToDatabase(netOut);
 		//db.prepareAndExecuteQueries();
 	}
+	public static void testSoftflowd() {
+		// NETMATE TESTS
+		BaggingToolDatabase db = new BaggingToolDatabase();
+		File f = new File(
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-softflowd.txt");
+
+				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-softflowd.txt");
+
+		SoftflowdOutput softOut = new SoftflowdOutput();
+		ArrayList<Flow> rawData = softOut.getRawDataFromFile(f);
+
+		softOut.setOutputFlowsFromRawData(rawData);
+		softOut.printOutFlows();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		//softOut.setOutputName(softOut.getClass().toString()
+			//	+ dateFormat.format(cal.getTime()).toString());
+		//db.saveOutputToDatabase(softOut);
+		//db.prepareAndExecuteQueries();
+	}
+	
 }
 
 /*
  * TODO: 
+ * Softflowd InDstMac, OutDstMac, InSrcMac, OutSrcMac. What to do?
+ * 
+ * Insert Start and End time as date into the DB!
+ * 
  * Queries must take into consideration valid features!
  * 
- * why isn't the output coming out completely? something with the printer
+ * 
+ * 
  * 
  * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
  * spec) get rid of it.
@@ -86,14 +115,14 @@ public class Main {
  * 
  * YAF: (icmp) [x:y] = port numbers
  * 
- * YAF: flows that doesn't have endtime: endtime = 0, duration = 0
+ ***YAF: flows that doesn't have endtime: endtime = 0, duration = 0
  * 
- * Remove ipv6
+ ***Remove ipv6
  * 
  * add a class label after bagging (we are assuming that every file will have
  * only ONE label)
  * 
- * include all features in the database
+ ***include all features in the database
  * 
  * look groupby, outfile mysql and
  */

@@ -46,20 +46,29 @@ public class NetmateOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowHeaderFwdTotalSz, 42);
 		featuresPresent.put(FeaturesConsts.flowHeaderBwdTotalSz, 43);
 		setUsedFeaturesWithCurrentPresentFeatures();
-		
-		//UNUSED FEATURES
+
+		// UNUSED FEATURES
 		featuresPresent.put(FeaturesConsts.flowPshFwdCount, 38);
 		featuresPresent.put(FeaturesConsts.flowPshBwdCount, 39);
 		featuresPresent.put(FeaturesConsts.flowUrgFwdCount, 40);
 		featuresPresent.put(FeaturesConsts.flowUrgBwdCount, 41);
 
-
 	}
 
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer flowIndex = featuresPresent.get(fieldName);
+		String featureContent = f.get(flowIndex).replaceAll("\\s+","");
+
+		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)
+				|| fieldName.equals(FeaturesConsts.flowDstIpAddr)) {
+			// Remove IPV6 and invalid ip address flows 
+			if (featureContent.contains(":") || featureContent.contains("0.0.0.0")) {
+				return null;
+			}
+
+		}
+		return featureContent;
 	}
 
 	@Override
@@ -67,9 +76,5 @@ public class NetmateOutput extends FlowOutput {
 		return ",";
 	}
 
-	@Override
-	public Boolean processRawFlow(Flow f) {
-		//For Netmate is all ok so far. Faster than checking every field.
-		return true;
-	}
+
 }

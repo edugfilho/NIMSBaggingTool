@@ -93,6 +93,29 @@ public class FeaturesConsts {
 	public static final String flowAppLabel = "AppLabel";
 	public static final String flowEndReason = "EndReason";
 
+	//NOT USED SOFTFLOWD FEATURES
+	public static final String flowNextHopIp = "NextHopIp";
+	public static final String flowBGPNextHopIp = "BGPNextHopIp";
+	public static final String flowRouterIp = "RouterIp";
+	public static final String flowSrcAs = "SrcAs";
+	public static final String flowDestAs = "DestAs";
+	public static final String flowInput = "Input";
+	public static final String flowOutput = "Output";
+	public static final String flowFlows = "Flows";
+	public static final String flowTos = "Tos";
+	public static final String flowSTos = "STos";
+	public static final String flowDTos = "DTos";
+	public static final String flowDir = "Dir";
+	public static final String flowSmask = "Smask";
+	public static final String flowDmask = "Dmask";
+	public static final String flowFwd = "Fwd";
+	public static final String flowSVLan = "SVLan";
+	public static final String flowDVLan = "DVLan";
+	public static final String flowEngine = "Engine";
+
+
+
+
 
 
 
