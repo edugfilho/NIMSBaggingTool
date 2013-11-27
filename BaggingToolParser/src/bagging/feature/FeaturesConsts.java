@@ -18,7 +18,7 @@ public class FeaturesConsts {
 	public static final String flowIpMaxTTL = "IpMaxTTL";
 	public static final String flowIpTTLChg = "IPTTLChg";
 	public static final String flowTcpInitWinSz ="TcpInitWinSz";
-	public static final String flowAvgWinSz = "AvgWinSz";
+	public static final String flowTcpAvgWinSz = "AvgWinSz";
 	public static final String flowTcpMinWinSz = "TcpMinWinSz";
 	public static final String flowTcpMaxWinSz = "TcpMaxWinSz";
 	public static final String flowMinIAT = "MinIAT";
@@ -112,15 +112,75 @@ public class FeaturesConsts {
 	public static final String flowSVLan = "SVLan";
 	public static final String flowDVLan = "DVLan";
 	public static final String flowEngine = "Engine";
-
-
-
-
-
-
-
-
 	
+	//NOT USED TRANALYZER FEATURES
+	public static final String FlowDir = "Dir"; 	
+	public static final String FlowInd = "FlowInd";
+	public static final String FlowStat = "FlowStat";
+	public static final String FlowUnixTimeFirst = "UnixTimeFirst";
+	public static final String FlowUnixTimeLast = "UnixTimeLast";			
+	public static final String FlowETHVlanID = "ETHVlanID";
+	//TODO public static final String FlowSrcMac_DstMac_NumP = "SrcMac_DstMac_NumP";				
+	public static final String FlowDstPortClass = "DstPort_class"; 						
+	public static final String FlowPktps= "Pktps";
+	public static final String FlowBytps= "Bytps";
+	public static final String FlowPktAsm= "PktAsm";
+	public static final String FlowBytAsm= "BytAsm";
+	public static final String FlowIpMindIPID= "IpMindIPID";
+	public static final String FlowIpTOS= "IpTOS"; 	
+	public static final String FlowIpFlags= "IpFlags";
+	public static final String FlowIpOptCnt= "IpOptCnt"; 
+	public static final String FlowIpOptCpCl_Num = "IpOptCpCl_Num"; 	
+	public static final String FlowTcpPSeqCnt = "TcpPSeqCnt";
+	public static final String FlowTcpSeqSntBytes = "TcpSeqSntBytes";
+	public static final String FlowTcpSeqFaultCnt = "TcpSeqFaultCnt";
+	public static final String FlowTcpPAckCnt = "TcpPAckCnt"; 
+	public static final String FlowTcpFlwLssAckRcvdBytes = "TcpFlwLssAckRcvdBytes"; 
+	public static final String FlowTcpAckFaultCnt = "TcpAckFaultCnt";
+	public static final String FlowTcpMinWinSz = "TcpMinWinSz";	
+	public static final String FlowTcpWinSzUpCnt = "TcpWinSzUpCnt";
+	public static final String FlowTcpWinSzChgDirCnt = "TcpWinSzChgDirCnt";
+	public static final String FlowTcpAggrFlags = "TcpAggrFlags";
+	public static final String FlowTcpAggrAnomaly = "TcpAggrAnomaly";
+	public static final String FlowTcpOptPktCnt = "TcpOptPktCnt";
+	public static final String FlowTcpOptCnt = "TcpOptCnt";
+	public static final String FlowTcpAggrOptions = "TcpAggrOptions";
+	public static final String FlowTcpMSS = "TcpMSS";
+	public static final String FlowTcpWS = "TcpWS";
+	public static final String FlowTcpSSA_SAATrip = "TcpSSA_SAATrip";
+	public static final String FlowTcpRTTSseqAA = "TcpWinSzDwnCnt";
+	public static final String FlowTcpRTTAckTripMin = "TcpRTTAckTripMin";
+	public static final String FlowTcpRTTAckTripMax = "TcpRTTAckTripMax";
+	public static final String FlowTcpRTTAckTripAve = "TcpRTTAckTripAve";
+	public static final String FlowTcpStates = "TcpStates";
+	public static final String FlowIcmpType_Code = "IcmpType_Code";
+	public static final String FlowIcmpEchoSuccRatio = "IcmpEchoSuccRatio";
+	public static final String FlowConnSrc = "ConnSrc";
+	public static final String FlowConnDst = "ConnDst";
+	public static final String FlowConnSrcDst = "ConnSrcDst";
+	public static final String FlowMinPl = "MinPl";
+	public static final String FlowMaxPl = "MaxPl";
+	public static final String FlowMeanPl = "MeanPl";
+	public static final String FlowLowQuartilePl = "LowQuartilePl";
+	public static final String FlowMedianPl = "MedianPl";
+	public static final String FlowUppQuartilePl = "UppQuartilePl";
+	public static final String FlowIqdPl = "IqdPl";
+	public static final String FlowModePl = "ModePl";
+	public static final String FlowRangePl = "RangePl";
+	public static final String FlowStdPl = "StdPl";
+	public static final String FlowStdrobPl = "StdrobPl";
+	public static final String FlowSkewPl = "SkewPl";
+	public static final String FlowExcPl = "ExcPl";
+	public static final String FlowLowQuartileIat = "LowQuartileIat";
+	public static final String FlowUppQuartileIat = "UppQuartileIat";
+	public static final String FlowIqdIat = "IqdIat";
+	public static final String FlowModeIat = "ModeIat";
+	public static final String FlowRobStdIat = "RobStdIat";
+	public static final String FlowSkewIat = "SkewIat";
+	public static final String FlowExcIat = "ExcIat";
+	public static final String FlowL2L3L4Pl_Iat = "L2L3L4Pl_Iat";
+	public static final String FlowPs_Iat_Cnt_PsCnt_IatCnt = "Ps_Iat_Cnt_PsCnt_IatCnt";
+
 	
 	private FeaturesConsts(){
 		//this prevents even the native class from 
