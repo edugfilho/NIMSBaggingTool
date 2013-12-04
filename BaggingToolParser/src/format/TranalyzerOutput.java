@@ -14,8 +14,8 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowDstPort, 10);
 		featuresPresent.put(FeaturesConsts.flowDuration, 5);
 		featuresPresent.put(FeaturesConsts.flowProtocol, 11);
-		//TODO calculate featuresPresent.put(FeaturesConsts.flowNumPkt, 0);
-		//TODO calculate featuresPresent.put(FeaturesConsts.flowSz, 0);
+		//TODO calculate featuresPresent.put(FeaturesConsts.flowNumPkt, 14,15);
+		//TODO calculate featuresPresent.put(FeaturesConsts.flowSz, 16,17);
 		featuresPresent.put(FeaturesConsts.flowMinPktSz, 18);
 		featuresPresent.put(FeaturesConsts.flowMaxPktSz, 19);
 		featuresPresent.put(FeaturesConsts.flowAvgPktSz, 20);
@@ -37,8 +37,8 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.FlowDir, 0); 	
 		featuresPresent.put(FeaturesConsts.FlowInd, 1);
 		featuresPresent.put(FeaturesConsts.FlowStat, 2);
-		featuresPresent.put(FeaturesConsts.FlowUnixTimeFirst, 2);
-		featuresPresent.put(FeaturesConsts.FlowUnixTimeLast, 3);			
+		featuresPresent.put(FeaturesConsts.FlowUnixTimeFirst, 3);
+		featuresPresent.put(FeaturesConsts.FlowUnixTimeLast, 4);			
 		featuresPresent.put(FeaturesConsts.FlowETHVlanID, 6);
 		//TODO featuresPresent.put(FeaturesConsts.FlowSrcMac_DstMac_NumP = "SrcMac_DstMac_NumP, 12);				
 		featuresPresent.put(FeaturesConsts.FlowDstPortClass, 13);						
@@ -47,6 +47,7 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.FlowPktAsm, 23);
 		featuresPresent.put(FeaturesConsts.FlowBytAsm, 24);
 		featuresPresent.put(FeaturesConsts.FlowIpMindIPID, 25);
+		featuresPresent.put(FeaturesConsts.FlowIpMaxdIPID, 26);
 		featuresPresent.put(FeaturesConsts.FlowIpTOS, 30); 	
 		featuresPresent.put(FeaturesConsts.FlowIpFlags, 31);
 		featuresPresent.put(FeaturesConsts.FlowIpOptCnt, 32); 
@@ -57,7 +58,7 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.FlowTcpPAckCnt, 37);
 		featuresPresent.put(FeaturesConsts.FlowTcpFlwLssAckRcvdBytes, 38);
 		featuresPresent.put(FeaturesConsts.FlowTcpAckFaultCnt, 39);
-		featuresPresent.put(FeaturesConsts.FlowTcpMinWinSz, 40);
+		featuresPresent.put(FeaturesConsts.FlowTcpWinSzDwnCnt, 44);
 		featuresPresent.put(FeaturesConsts.FlowTcpWinSzUpCnt, 45);
 		featuresPresent.put(FeaturesConsts.FlowTcpWinSzChgDirCnt, 46);
 		featuresPresent.put(FeaturesConsts.FlowTcpAggrFlags, 47);
@@ -106,13 +107,18 @@ public class TranalyzerOutput extends FlowOutput {
 
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer flowIndex = featuresPresent.get(fieldName);
+		String featureContent = f.get(flowIndex).replaceAll("\\s+", "");
+		return featureContent;
 	}
 
 	@Override
 	public String getSeparator() {
-		return "";
+		return "\t";
+	}
+	@Override
+	public Integer ignoreLines() {
+		return 1;
 	}
 
 

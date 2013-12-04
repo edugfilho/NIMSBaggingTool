@@ -80,7 +80,7 @@ public class SoftflowdOutput extends FlowOutput {
 		f.set(2, f.get(4));
 		f.set(3, f.get(5));
 
-		// Ip addr and ports are together.Great.
+		// Ip addr and ports are together. Not good.
 		String ipAddrPort = f.get(6);
 		String delim = "[:]";
 		String[] separatedIpAddrPort = ipAddrPort.split(delim);
@@ -105,6 +105,7 @@ public class SoftflowdOutput extends FlowOutput {
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
 		Integer flowIndex = featuresPresent.get(fieldName);
+		//Remove white spaces from each field
 		String featureContent = f.get(flowIndex).replaceAll("\\s+", "");
 
 		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)

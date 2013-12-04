@@ -8,6 +8,7 @@ import database.BaggingToolDatabase;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
 import format.SoftflowdOutput;
+import format.TranalyzerOutput;
 import format.YafOutput;
 
 public class Main {
@@ -22,7 +23,8 @@ public class Main {
 		//db.prepareAndExecuteQueries();
 		//testNetmate();
 		//testYaf();
-		testSoftflowd();
+		//testSoftflowd();
+		testTranalyzer();
 
 	}
 
@@ -82,6 +84,28 @@ public class Main {
 
 		softOut.setOutputFlowsFromRawData(rawData);
 		softOut.printOutFlows();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		//softOut.setOutputName(softOut.getClass().toString()
+			//	+ dateFormat.format(cal.getTime()).toString());
+		//db.saveOutputToDatabase(softOut);
+		//db.prepareAndExecuteQueries();
+	}
+	
+	public static void testTranalyzer() {
+		// NETMATE TESTS
+		BaggingToolDatabase db = new BaggingToolDatabase();
+		File f = new File(
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/tranalyzer_demo");
+
+				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa_Tranalzer.txt");
+
+		TranalyzerOutput tranOut = new TranalyzerOutput();
+		ArrayList<Flow> rawData = tranOut.getRawDataFromFile(f);
+
+		tranOut.setOutputFlowsFromRawData(rawData);
+		tranOut.printOutFlows();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
