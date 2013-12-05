@@ -1,6 +1,5 @@
 package format;
 
-import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class SoftflowdOutput extends FlowOutput {
@@ -29,7 +28,7 @@ public class SoftflowdOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowBGPNextHopIp, 9);
 		featuresPresent.put(FeaturesConsts.flowRouterIp, 10);
 		featuresPresent.put(FeaturesConsts.flowSrcAs, 11);
-		featuresPresent.put(FeaturesConsts.flowDestAs, 12);
+		featuresPresent.put(FeaturesConsts.flowDstAs, 12);
 		featuresPresent.put(FeaturesConsts.flowInput, 13);
 		featuresPresent.put(FeaturesConsts.flowOutput, 14);
 		featuresPresent.put(FeaturesConsts.flowFlows, 21);
@@ -43,9 +42,9 @@ public class SoftflowdOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowSVLan, 29);
 		featuresPresent.put(FeaturesConsts.flowDVLan, 30);
 		// This below = InSrcMacAddr in file
-		featuresPresent.put(FeaturesConsts.flowDestMacAddr, 31);
+		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 31);
 		// This below = OutDestMacAddr in file
-		featuresPresent.put(FeaturesConsts.flowDestMacAddr, 32);
+		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 32);
 		// This below = InDestMacAddr in file
 		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 33);
 		// This below = OutSrcMacAddr in file
@@ -54,10 +53,11 @@ public class SoftflowdOutput extends FlowOutput {
 
 	}
 
-	/*
-	 * Here is where we do all the dirty job to make the flow look good to be
-	 * processed
+	/**
+	 * Place some feature values in the correct places inside the flow so they
+	 * can be read accordingly later on.
 	 */
+	@Override
 	public Flow beforeProcessingRawFlow(Flow f) {
 		/*
 		 * As start and end time are separated as follows:
@@ -68,9 +68,9 @@ public class SoftflowdOutput extends FlowOutput {
 		 * 
 		 * [Start date+Start time][End date + End time]:
 		 */
-		
-		//Filter out everything that doesn't start with a date
-		if(!f.get(0).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")){
+
+		// Filter out everything that doesn't start with a date
+		if (!f.get(0).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
 			return null;
 		}
 		f.set(0, f.get(0) + f.get(1));
@@ -105,7 +105,7 @@ public class SoftflowdOutput extends FlowOutput {
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
 		Integer flowIndex = featuresPresent.get(fieldName);
-		//Remove white spaces from each field
+		// Remove white spaces from each field
 		String featureContent = f.get(flowIndex).replaceAll("\\s+", "");
 
 		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)
@@ -123,7 +123,8 @@ public class SoftflowdOutput extends FlowOutput {
 				String delim = "[.]";
 				String[] numbers = featureContent.split(delim);
 				featureContent = numbers[0]
-						+ numbers[1].substring(0, numbers[1].indexOf("M"))+"00";
+						+ numbers[1].substring(0, numbers[1].indexOf("M"))
+						+ "00";
 			}
 		}
 		return featureContent;
@@ -134,7 +135,7 @@ public class SoftflowdOutput extends FlowOutput {
 
 		return " ";
 	}
-	
+
 	@Override
 	public Integer ignoreLines() {
 		return 1;

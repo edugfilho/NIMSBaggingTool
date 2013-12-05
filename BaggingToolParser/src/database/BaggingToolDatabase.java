@@ -3,6 +3,7 @@ package database;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,17 +32,79 @@ public class BaggingToolDatabase {
 
 	}
 
+	public void resetDatabase() {
+		Statement st = null;
+		// ResultSet rs = null;
+		try {
+			connect();
+
+			st = con.createStatement();
+
+			String statement = "DROP TABLE IF EXISTS flows";
+			st.executeUpdate(statement);
+
+			statement = "DROP TABLE IF EXISTS output";
+			st.executeUpdate(statement);
+
+			statement = "CREATE TABLE IF NOT EXISTS output ( OutputName varchar(100) NOT NULL, ToolName varchar(100) NOT NULL, output_id bigint(20) NOT NULL AUTO_INCREMENT, PRIMARY KEY (output_id)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8";
+			st.executeUpdate(statement);
+
+			statement = "CREATE TABLE flows ("
+					+ mountFlowTableCreationStatement();
+			st.executeUpdate(statement);
+
+			String lastPart = "ALTER TABLE flows ADD CONSTRAINT flows_ibfk_1 FOREIGN KEY (Output_Id) REFERENCES output (output_id) ON DELETE CASCADE";
+			st.executeUpdate(lastPart);
+			// ON DELETE CASCADE ON UPDATE RESTRICT
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String mountFlowTableCreationStatement() {
+		Field[] fields = FeaturesConsts.class.getFields();
+		String result = "FlowId bigint(20) NOT NULL AUTO_INCREMENT, Output_Id bigint(20) NOT NULL";
+		for (Field field : fields) {
+			String s = null;
+			try {
+				s = (String) field.get(new Object());
+				String mod;
+				if (s.contentEquals(FeaturesConsts.flowSrcIpAddr)
+						|| s.contentEquals(FeaturesConsts.flowDstIpAddr)
+						|| s.contentEquals(FeaturesConsts.flowSrcPort)
+						|| s.contentEquals(FeaturesConsts.flowDstPort)
+						|| s.contentEquals(FeaturesConsts.flowProtocol)) {
+					mod = " NOT NULL";
+
+				} else {
+					mod = " default NULL";
+				}
+
+				s = ", " + s + " varchar(100)" + mod;
+
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			result = result + s;
+
+		}
+		return result+ ", PRIMARY KEY (FlowId), KEY Output_Id (Output_Id)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
+	}
+
 	public String getAllValidFeatures(FlowOutput output, int numFeatures) {
 		String insertFlows = "";
 		int index = 0;
 		for (Entry<String, Integer> entry : Util.entriesSortedByValues(output
 				.getFeaturesPresent())) {
 
+			// To be inserted, a feature must exist in an output
 			if (entry.getValue() != FlowOutput.FALSE && index < numFeatures) {
 				insertFlows += entry.getKey() + ", ";
 				index++;
 			}
-			
+
 		}
 		insertFlows += "Output_id)";
 		return insertFlows;
@@ -74,11 +137,10 @@ public class BaggingToolDatabase {
 				// System.out.println("ok, netmate: " + recentOutputId);
 			}
 
-			
-
 			for (Flow flow : output.getOutputFlows()) {
 				String insertFlows1 = "INSERT INTO flows ("
-						+ getAllValidFeatures(output, flow.size()) + " VALUES (";
+						+ getAllValidFeatures(output, flow.size())
+						+ " VALUES (";
 				String insertFlows2 = "";
 				for (String string : flow) {
 					insertFlows2 += "'" + string + "', ";
@@ -142,8 +204,8 @@ public class BaggingToolDatabase {
 
 	public void prepareAndExecuteQueries() {
 		String query1 = "SELECT * FROM flows GROUP BY "
-				+ FeaturesConsts.flowSrcIpAddr+","+FeaturesConsts.flowSrcPort;
-
+				+ FeaturesConsts.flowSrcIpAddr + ","
+				+ FeaturesConsts.flowSrcPort;
 
 		printToFile(performQueries(query1), "query1.txt");
 
@@ -152,9 +214,10 @@ public class BaggingToolDatabase {
 	public void printToFile(String content, String fname) {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter("C:/Users/Eduardo/Documents/NIMS/baggingTool/Output"
-					+ fname, "UTF-8");//"/home/eduardo/NIMSBaggingTool/output"
-					//+ fname, "UTF-8");
+			writer = new PrintWriter(
+					"C:/Users/Eduardo/Documents/NIMS/baggingTool/Output"
+							+ fname, "UTF-8");// "/home/eduardo/NIMSBaggingTool/output"
+			// + fname, "UTF-8");
 			writer.println(content);
 			writer.close();
 		} catch (FileNotFoundException e) {

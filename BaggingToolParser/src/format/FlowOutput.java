@@ -141,10 +141,10 @@ public abstract class FlowOutput {
 		}
 	}
 
-	// Can be overridden by an output to give it a chance to modify a raw flow
-	// before this flow is processed, for example, Softflowd uses it to
-	// rearrange feature values inside a flow. If this method return null the
-	// whole flow is ignored
+	/** Can be overridden by an output to give it a chance to modify a raw flow
+	 before this flow is processed. If this method return null the
+	 whole flow is ignored
+	 */
 	public Flow beforeProcessingRawFlow(Flow f) {
 		return f;
 	}
@@ -228,5 +228,13 @@ public abstract class FlowOutput {
 			}
 
 		}
+	}
+
+	public ArrayList<String> getFeaturesUsed() {
+		return featuresUsed;
+	}
+
+	public void setFeaturesUsed(ArrayList<String> featuresUsed) {
+		this.featuresUsed = featuresUsed;
 	}
 }

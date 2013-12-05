@@ -28,7 +28,7 @@ public class YafOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
 		featuresPresent.put(FeaturesConsts.flowRtt, 3);
 		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 9);
-		featuresPresent.put(FeaturesConsts.flowDestMacAddr, 10);
+		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 10);
 		featuresPresent.put(FeaturesConsts.flowFwdIflags, 11);
 		featuresPresent.put(FeaturesConsts.flowFwdUflags, 12);
 		featuresPresent.put(FeaturesConsts.flowBwdIflags, 13);

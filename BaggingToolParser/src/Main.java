@@ -20,11 +20,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		BaggingToolDatabase db = new BaggingToolDatabase();
+		db.resetDatabase();
 		//db.prepareAndExecuteQueries();
 		//testNetmate();
 		//testYaf();
 		//testSoftflowd();
-		testTranalyzer();
+		//testTranalyzer();
 
 	}
 
@@ -121,6 +122,9 @@ public class Main {
  * TODO: 
  * Softflowd InDstMac, OutDstMac, InSrcMac, OutSrcMac. What to do?
  * 
+ * add a class label after bagging (we are assuming that every file will have
+ * only ONE label)
+ * 
  * Insert Start and End time as date into the DB!
  * 
  * Queries must take into consideration valid features!
@@ -131,7 +135,7 @@ public class Main {
  * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
  * spec) get rid of it.
  * 
- * softflowd "M" (mega) features
+ ***softflowd "M" (mega) features
  * 
  * YAF check ip addr (if it has endtime it's ok)
  * 
@@ -143,8 +147,7 @@ public class Main {
  * 
  ***Remove ipv6
  * 
- * add a class label after bagging (we are assuming that every file will have
- * only ONE label)
+ * 
  * 
  ***include all features in the database
  * 

@@ -1,21 +1,28 @@
 package format;
 
+import java.util.StringTokenizer;
+
 import format.FlowOutput.Flow;
 import bagging.feature.FeaturesConsts;
 
 public class TranalyzerOutput extends FlowOutput {
 
+	final int flowNumPktIndex = 93;
+	final int flowSzIndex = 94;
+	final int flowSrcMacIndex = 95;
+	final int flowDstMacIndex = 96;
+
 	public TranalyzerOutput() {
 		super();
-		//Duration is calculated via preprocessing
+		// Duration is calculated via preprocessing
 		featuresPresent.put(FeaturesConsts.flowSrcIpAddr, 7);
 		featuresPresent.put(FeaturesConsts.flowSrcPort, 8);
 		featuresPresent.put(FeaturesConsts.flowDstIpAddr, 9);
 		featuresPresent.put(FeaturesConsts.flowDstPort, 10);
 		featuresPresent.put(FeaturesConsts.flowDuration, 5);
+		featuresPresent.put(FeaturesConsts.flowSz, flowSzIndex);
+		featuresPresent.put(FeaturesConsts.flowNumPkt, flowNumPktIndex);
 		featuresPresent.put(FeaturesConsts.flowProtocol, 11);
-		//TODO calculate featuresPresent.put(FeaturesConsts.flowNumPkt, 14,15);
-		//TODO calculate featuresPresent.put(FeaturesConsts.flowSz, 16,17);
 		featuresPresent.put(FeaturesConsts.flowMinPktSz, 18);
 		featuresPresent.put(FeaturesConsts.flowMaxPktSz, 19);
 		featuresPresent.put(FeaturesConsts.flowAvgPktSz, 20);
@@ -33,93 +40,149 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowRangeIAT, 86);
 		featuresPresent.put(FeaturesConsts.flowStdIAT, 87);
 		setUsedFeaturesWithCurrentPresentFeatures();
-		
-		featuresPresent.put(FeaturesConsts.FlowDir, 0); 	
-		featuresPresent.put(FeaturesConsts.FlowInd, 1);
-		featuresPresent.put(FeaturesConsts.FlowStat, 2);
-		featuresPresent.put(FeaturesConsts.FlowUnixTimeFirst, 3);
-		featuresPresent.put(FeaturesConsts.FlowUnixTimeLast, 4);			
-		featuresPresent.put(FeaturesConsts.FlowETHVlanID, 6);
-		//TODO featuresPresent.put(FeaturesConsts.FlowSrcMac_DstMac_NumP = "SrcMac_DstMac_NumP, 12);				
-		featuresPresent.put(FeaturesConsts.FlowDstPortClass, 13);						
-		featuresPresent.put(FeaturesConsts.FlowPktps, 21);
-		featuresPresent.put(FeaturesConsts.FlowBytps, 22);
-		featuresPresent.put(FeaturesConsts.FlowPktAsm, 23);
-		featuresPresent.put(FeaturesConsts.FlowBytAsm, 24);
-		featuresPresent.put(FeaturesConsts.FlowIpMindIPID, 25);
-		featuresPresent.put(FeaturesConsts.FlowIpMaxdIPID, 26);
-		featuresPresent.put(FeaturesConsts.FlowIpTOS, 30); 	
-		featuresPresent.put(FeaturesConsts.FlowIpFlags, 31);
-		featuresPresent.put(FeaturesConsts.FlowIpOptCnt, 32); 
-		featuresPresent.put(FeaturesConsts.FlowIpOptCpCl_Num, 33);	
-		featuresPresent.put(FeaturesConsts.FlowTcpPSeqCnt, 34);
-		featuresPresent.put(FeaturesConsts.FlowTcpSeqSntBytes, 35);
-		featuresPresent.put(FeaturesConsts.FlowTcpSeqFaultCnt, 36);
-		featuresPresent.put(FeaturesConsts.FlowTcpPAckCnt, 37);
-		featuresPresent.put(FeaturesConsts.FlowTcpFlwLssAckRcvdBytes, 38);
-		featuresPresent.put(FeaturesConsts.FlowTcpAckFaultCnt, 39);
-		featuresPresent.put(FeaturesConsts.FlowTcpWinSzDwnCnt, 44);
-		featuresPresent.put(FeaturesConsts.FlowTcpWinSzUpCnt, 45);
-		featuresPresent.put(FeaturesConsts.FlowTcpWinSzChgDirCnt, 46);
-		featuresPresent.put(FeaturesConsts.FlowTcpAggrFlags, 47);
-		featuresPresent.put(FeaturesConsts.FlowTcpAggrAnomaly, 48);
-		featuresPresent.put(FeaturesConsts.FlowTcpOptPktCnt, 49);
-		featuresPresent.put(FeaturesConsts.FlowTcpOptCnt, 50);
-		featuresPresent.put(FeaturesConsts.FlowTcpAggrOptions, 51);
-		featuresPresent.put(FeaturesConsts.FlowTcpMSS, 52);
-		featuresPresent.put(FeaturesConsts.FlowTcpWS, 53);
-		featuresPresent.put(FeaturesConsts.FlowTcpSSA_SAATrip, 54);
-		featuresPresent.put(FeaturesConsts.FlowTcpRTTSseqAA, 55);
-		featuresPresent.put(FeaturesConsts.FlowTcpRTTAckTripMin, 56);
-		featuresPresent.put(FeaturesConsts.FlowTcpRTTAckTripMax, 57);
-		featuresPresent.put(FeaturesConsts.FlowTcpRTTAckTripAve, 58);
-		featuresPresent.put(FeaturesConsts.FlowTcpStates, 59);
-		featuresPresent.put(FeaturesConsts.FlowIcmpType_Code, 60);
-		featuresPresent.put(FeaturesConsts.FlowIcmpEchoSuccRatio, 61);
-		featuresPresent.put(FeaturesConsts.FlowConnSrc, 62);
-		featuresPresent.put(FeaturesConsts.FlowConnDst, 63);
-		featuresPresent.put(FeaturesConsts.FlowConnSrcDst, 64);
-		featuresPresent.put(FeaturesConsts.FlowMinPl, 65);
-		featuresPresent.put(FeaturesConsts.FlowMaxPl, 66);
-		featuresPresent.put(FeaturesConsts.FlowMeanPl, 67);
-		featuresPresent.put(FeaturesConsts.FlowLowQuartilePl, 68);
-		featuresPresent.put(FeaturesConsts.FlowMedianPl, 69);
-		featuresPresent.put(FeaturesConsts.FlowUppQuartilePl, 70);
-		featuresPresent.put(FeaturesConsts.FlowIqdPl, 71);
-		featuresPresent.put(FeaturesConsts.FlowModePl, 72);
-		featuresPresent.put(FeaturesConsts.FlowRangePl, 73);
-		featuresPresent.put(FeaturesConsts.FlowStdPl, 74);
-		featuresPresent.put(FeaturesConsts.FlowStdrobPl, 75);
-		featuresPresent.put(FeaturesConsts.FlowSkewPl, 76);
-		featuresPresent.put(FeaturesConsts.FlowExcPl, 77);
-		featuresPresent.put(FeaturesConsts.FlowLowQuartileIat, 81);
-		featuresPresent.put(FeaturesConsts.FlowUppQuartileIat, 83);
-		featuresPresent.put(FeaturesConsts.FlowIqdIat, 84);
-		featuresPresent.put(FeaturesConsts.FlowModeIat, 85);
-		featuresPresent.put(FeaturesConsts.FlowRobStdIat, 88);
-		featuresPresent.put(FeaturesConsts.FlowSkewIat, 89);
-		featuresPresent.put(FeaturesConsts.FlowExcIat, 90);
-		featuresPresent.put(FeaturesConsts.FlowL2L3L4Pl_Iat, 91);
-		featuresPresent.put(FeaturesConsts.FlowPs_Iat_Cnt_PsCnt_IatCnt,92 );
-		
-		
+
+		featuresPresent.put(FeaturesConsts.flowDir, 0);
+		featuresPresent.put(FeaturesConsts.flowInd, 1);
+		featuresPresent.put(FeaturesConsts.flowStat, 2);
+		featuresPresent.put(FeaturesConsts.flowUnixTimeFirst, 3);
+		featuresPresent.put(FeaturesConsts.flowUnixTimeLast, 4);
+		featuresPresent.put(FeaturesConsts.flowETHVlanID, 6);
+		featuresPresent.put(FeaturesConsts.flowNumP, 12);
+		featuresPresent.put(FeaturesConsts.flowDstPortClass, 13);
+		featuresPresent.put(FeaturesConsts.flowTotalFwdPkt, 14);
+		featuresPresent.put(FeaturesConsts.flowTotalBwdPkt, 15);
+		featuresPresent.put(FeaturesConsts.flowTotalFwdSz, 16);
+		featuresPresent.put(FeaturesConsts.flowTotalBwdSz, 17);
+		featuresPresent.put(FeaturesConsts.flowPktps, 21);
+		featuresPresent.put(FeaturesConsts.flowBytps, 22);
+		featuresPresent.put(FeaturesConsts.flowPktAsm, 23);
+		featuresPresent.put(FeaturesConsts.flowBytAsm, 24);
+		featuresPresent.put(FeaturesConsts.flowIpMindIPID, 25);
+		featuresPresent.put(FeaturesConsts.flowIpMaxdIPID, 26);
+		featuresPresent.put(FeaturesConsts.flowIpTOS, 30);
+		featuresPresent.put(FeaturesConsts.flowIpFlags, 31);
+		featuresPresent.put(FeaturesConsts.flowIpOptCnt, 32);
+		featuresPresent.put(FeaturesConsts.flowIpOptCpCl_Num, 33);
+		featuresPresent.put(FeaturesConsts.flowTcpPSeqCnt, 34);
+		featuresPresent.put(FeaturesConsts.flowTcpSeqSntBytes, 35);
+		featuresPresent.put(FeaturesConsts.flowTcpSeqFaultCnt, 36);
+		featuresPresent.put(FeaturesConsts.flowTcpPAckCnt, 37);
+		featuresPresent.put(FeaturesConsts.flowTcpFlwLssAckRcvdBytes, 38);
+		featuresPresent.put(FeaturesConsts.flowTcpAckFaultCnt, 39);
+		featuresPresent.put(FeaturesConsts.flowTcpWinSzDwnCnt, 44);
+		featuresPresent.put(FeaturesConsts.flowTcpWinSzUpCnt, 45);
+		featuresPresent.put(FeaturesConsts.flowTcpWinSzChgDirCnt, 46);
+		featuresPresent.put(FeaturesConsts.flowTcpAggrFlags, 47);
+		featuresPresent.put(FeaturesConsts.flowTcpAggrAnomaly, 48);
+		featuresPresent.put(FeaturesConsts.flowTcpOptPktCnt, 49);
+		featuresPresent.put(FeaturesConsts.flowTcpOptCnt, 50);
+		featuresPresent.put(FeaturesConsts.flowTcpAggrOptions, 51);
+		featuresPresent.put(FeaturesConsts.flowTcpMSS, 52);
+		featuresPresent.put(FeaturesConsts.flowTcpWS, 53);
+		featuresPresent.put(FeaturesConsts.flowTcpSSA_SAATrip, 54);
+		featuresPresent.put(FeaturesConsts.flowTcpRTTSseqAA, 55);
+		featuresPresent.put(FeaturesConsts.flowTcpRTTAckTripMin, 56);
+		featuresPresent.put(FeaturesConsts.flowTcpRTTAckTripMax, 57);
+		featuresPresent.put(FeaturesConsts.flowTcpRTTAckTripAve, 58);
+		featuresPresent.put(FeaturesConsts.flowTcpStates, 59);
+		featuresPresent.put(FeaturesConsts.flowIcmpType_Code, 60);
+		featuresPresent.put(FeaturesConsts.flowIcmpEchoSuccRatio, 61);
+		featuresPresent.put(FeaturesConsts.flowConnSrc, 62);
+		featuresPresent.put(FeaturesConsts.flowConnDst, 63);
+		featuresPresent.put(FeaturesConsts.flowConnSrcDst, 64);
+		featuresPresent.put(FeaturesConsts.flowMinPl, 65);
+		featuresPresent.put(FeaturesConsts.flowMaxPl, 66);
+		featuresPresent.put(FeaturesConsts.flowMeanPl, 67);
+		featuresPresent.put(FeaturesConsts.flowLowQuartilePl, 68);
+		featuresPresent.put(FeaturesConsts.flowMedianPl, 69);
+		featuresPresent.put(FeaturesConsts.flowUppQuartilePl, 70);
+		featuresPresent.put(FeaturesConsts.flowIqdPl, 71);
+		featuresPresent.put(FeaturesConsts.flowModePl, 72);
+		featuresPresent.put(FeaturesConsts.flowRangePl, 73);
+		featuresPresent.put(FeaturesConsts.flowStdPl, 74);
+		featuresPresent.put(FeaturesConsts.flowStdrobPl, 75);
+		featuresPresent.put(FeaturesConsts.flowSkewPl, 76);
+		featuresPresent.put(FeaturesConsts.flowExcPl, 77);
+		featuresPresent.put(FeaturesConsts.flowLowQuartileIat, 81);
+		featuresPresent.put(FeaturesConsts.flowUppQuartileIat, 83);
+		featuresPresent.put(FeaturesConsts.flowIqdIat, 84);
+		featuresPresent.put(FeaturesConsts.flowModeIat, 85);
+		featuresPresent.put(FeaturesConsts.flowRobStdIat, 88);
+		featuresPresent.put(FeaturesConsts.flowSkewIat, 89);
+		featuresPresent.put(FeaturesConsts.flowExcIat, 90);
+		featuresPresent.put(FeaturesConsts.flowL2L3L4Pl_Iat, 91);
+		featuresPresent.put(FeaturesConsts.flowPs_Iat_Cnt_PsCnt_IatCnt, 92);
+		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, flowSrcMacIndex);
+		featuresPresent.put(FeaturesConsts.flowDstMacAddr, flowDstMacIndex);
+
 	}
 
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
 		Integer flowIndex = featuresPresent.get(fieldName);
 		String featureContent = f.get(flowIndex).replaceAll("\\s+", "");
+		if (fieldName.equals(FeaturesConsts.flowSrcIpAddr)
+				|| fieldName.equals(FeaturesConsts.flowDstIpAddr)) {
+			// Remove IPV6 and invalid ip address flows
+			if (featureContent.contains(":")
+					|| featureContent.contains("0.0.0.0")) {
+				return null;
+			}
+
+		}
 		return featureContent;
+	}
+
+	/**
+	 * Calculates total size and number of packets of Tranalyzer's flows;
+	 * Separates SrcMacAddr from DstMacAddr and NumP 
+	 */
+	@Override
+	public Flow beforeProcessingRawFlow(Flow f) {
+
+		//Adds the calculated value of total size and number of packets
+		f.add(calculateFlowNumPkt(f));
+		f.add(calculateFlowSz(f));
+		
+		//Gets the SrcMacAddr_DstMacAddr_NumP all together and splits them
+		StringTokenizer st = new StringTokenizer(f.get(12), "_");
+		
+		//Adds SrcMacAddr and DestMacAddr
+		String srcMacAddr = st.nextElement().toString();
+		f.add(srcMacAddr);
+		String destMacAddr = st.nextElement().toString();
+		f.add(destMacAddr);
+		
+		//Sets NumP alone where the whole content was
+		String numP = st.nextElement().toString();
+		f.set(12, numP);
+		
+		int a = f.size();
+		System.out.println(a);
+		return f;
+	}
+
+	public String calculateFlowSz(Flow f) {
+		// 16 and 17 are the indexes of fwdSz and bwdSz
+		Double flowSz = Double.valueOf(f.get(16)) + Double.valueOf(f.get(17));
+		return flowSz.toString();
+	}
+
+	public String calculateFlowNumPkt(Flow f) {
+		// 14 and 15 are the indexes of fwdNumPkt and bwdNumPkt
+		Double flowNumPkt = Double.valueOf(f.get(14))
+				+ Double.valueOf(f.get(15));
+		return flowNumPkt.toString();
 	}
 
 	@Override
 	public String getSeparator() {
 		return "\t";
 	}
+
 	@Override
 	public Integer ignoreLines() {
 		return 1;
 	}
-
 
 }
