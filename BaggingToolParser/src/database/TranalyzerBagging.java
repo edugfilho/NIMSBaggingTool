@@ -55,7 +55,7 @@ public class TranalyzerBagging {
 				+ "STD("+FeaturesConsts.flowStdIAT+") AS stdRangeIat, "
 				+ "AVG("+FeaturesConsts.flowMedianIAT+") AS avgMedianIat "
 				+ ""
-				+ "INTO OUTFILE 'C:/Users/Eduardo/Documents/NIMS/baggingTool/Output/out.txt' FROM flows GROUP BY "
+				+ "INTO OUTFILE '/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out/outTranalyzer.txt' FROM flows GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "
 				+ FeaturesConsts.flowSrcPort + ", "

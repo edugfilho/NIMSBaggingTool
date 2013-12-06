@@ -28,6 +28,7 @@ public class BaggingToolDatabase {
 	private static final String user = "root";
 	private static final String password = "root";
 	private static final String VARCHAR_SIZE = "200";
+	public static final String OUTPUT_PATH = "/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out";
 	private Connection con = null;
 
 	private void connect() throws SQLException {
