@@ -1,5 +1,9 @@
 package format;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import bagging.feature.FeaturesConsts;
 
 public class SoftflowdOutput extends FlowOutput {
@@ -105,6 +109,7 @@ public class SoftflowdOutput extends FlowOutput {
 	@Override
 	public String preProcessField(String fieldName, Flow f) {
 		Integer flowIndex = featuresPresent.get(fieldName);
+		
 		// Remove white spaces from each field
 		String featureContent = f.get(flowIndex).replaceAll("\\s+", "");
 
@@ -127,6 +132,20 @@ public class SoftflowdOutput extends FlowOutput {
 						+ "00";
 			}
 		}
+
+		if (fieldName.contentEquals(FeaturesConsts.flowStartTime)
+				|| fieldName.contentEquals(FeaturesConsts.flowEndTime)) {
+			Date date = null;
+			try {
+				date = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss.S").parse(f.get(flowIndex));
+			
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			featureContent = String.valueOf(date.getTime());
+		}
+
 		return featureContent;
 	}
 

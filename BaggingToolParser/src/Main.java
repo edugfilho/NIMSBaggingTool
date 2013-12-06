@@ -21,15 +21,14 @@ public class Main {
 	public static void main(String[] args) {
 		
 		BaggingToolDatabase db = new BaggingToolDatabase();
-		TranalyzerBagging traBag = new TranalyzerBagging();
-		//System.out.println(traBag.getBaggingQuery());
 		db.resetDatabase();
-		testNetmate();
+		testSoftflowd();
 		
 		db.prepareAndExecuteQueries();
+		//testNetmate();
 		//testTranalyzer();
 		//testYaf();
-		//testSoftflowd();
+		//
 
 	}
 
@@ -77,10 +76,10 @@ public class Main {
 		//db.prepareAndExecuteQueries();
 	}
 	public static void testSoftflowd() {
-		// NETMATE TESTS
+
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-softflowd.txt");
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-softflowdDemo.txt");
 
 				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-softflowd.txt");
 
@@ -88,18 +87,18 @@ public class Main {
 		ArrayList<Flow> rawData = softOut.getRawDataFromFile(f);
 
 		softOut.setOutputFlowsFromRawData(rawData);
-		softOut.printOutFlows();
+		//softOut.printOutFlows();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		//softOut.setOutputName(softOut.getClass().toString()
-			//	+ dateFormat.format(cal.getTime()).toString());
-		//db.saveOutputToDatabase(softOut);
+				//+ dateFormat.format(cal.getTime()).toString());
+		db.saveOutputToDatabase(softOut);
 		//db.prepareAndExecuteQueries();
 	}
 	
 	public static void testTranalyzer() {
-		// NETMATE TESTS
+		
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
 		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/tranalyzer_demo.txt");
@@ -127,31 +126,10 @@ public class Main {
  * ASSUMED tranalyzer: Overall ipTTLChg = total = sum.
  * median of MedianIat = std of medianIAT right now
  * 
- * transform dates to miliseconds
+ * transformed dates to miliseconds
  * 
  * add a class label after bagging (we are assuming that every file will have
  * only ONE label)
- * 
- * Insert Start and End time as date into the DB!
- * 
- * Queries must take into consideration valid features!
-
- * Tranalyzer's duration 
- * 
- ***softflowd "M" (mega) features
- * 
- * YAF check ip addr (if it has endtime it's ok)
- * 
- * 
- * 
- ***YAF: flows that doesn't have endtime: endtime = 0, duration = 0
- * 
- ***Remove ipv6
- * 
- * 
- * 
- ***include all features in the database
- * 
  * look groupby, outfile mysql and
  */
 

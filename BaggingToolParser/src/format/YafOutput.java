@@ -1,5 +1,9 @@
 package format;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import bagging.feature.FeaturesConsts;
 
 public class YafOutput extends FlowOutput {
@@ -64,12 +68,20 @@ public class YafOutput extends FlowOutput {
 			}
 		}
 		
-		/*
-		 * YAF: idle (or active when no duration ) means no backwards data 
-		 * 
-		 * YAF:
-		 * (icmp) [x:y] = port numbers 
-		 */
+		//Transforms formatted date into milliseconds to be used by database operations
+		if (fieldName.contentEquals(FeaturesConsts.flowStartTime)
+				|| fieldName.contentEquals(FeaturesConsts.flowEndTime)) {
+			Date date = null;
+			try {
+				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(f.get(flowIndex));
+			
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			featureContent = String.valueOf(date.getTime());
+		}
+
 		return featureContent;
 	}
 
