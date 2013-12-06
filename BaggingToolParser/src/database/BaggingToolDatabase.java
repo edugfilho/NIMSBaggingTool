@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,8 @@ import bagging.feature.FeaturesConsts;
 import format.FlowOutput;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
+import format.SoftflowdOutput;
+import format.TranalyzerOutput;
 import format.YafOutput;
 
 public class BaggingToolDatabase {
@@ -34,6 +37,7 @@ public class BaggingToolDatabase {
 
 	public void resetDatabase() {
 		Statement st = null;
+
 		// ResultSet rs = null;
 		try {
 			connect();
@@ -61,6 +65,24 @@ public class BaggingToolDatabase {
 		}
 	}
 
+	private String getFieldType(String fieldName) {
+		
+		TranalyzerOutput tranOut = new TranalyzerOutput();
+		NetmateOutput netOut = new NetmateOutput();
+		SoftflowdOutput softOut = new SoftflowdOutput();
+		YafOutput yafOut = new YafOutput();
+
+		HashSet<String> allFeaturesUsed = new HashSet<String>();
+		allFeaturesUsed.addAll(tranOut.getFeaturesUsed());
+		allFeaturesUsed.addAll(netOut.getFeaturesUsed());
+		allFeaturesUsed.addAll(softOut.getFeaturesUsed());
+		allFeaturesUsed.addAll(yafOut.getFeaturesUsed());
+		
+		if(allFeaturesUsed.contains(fieldName)){
+			return "double";
+		}else return "varchar(100)";
+	}
+
 	public String mountFlowTableCreationStatement() {
 		Field[] fields = FeaturesConsts.class.getFields();
 		String result = "FlowId bigint(20) NOT NULL AUTO_INCREMENT, Output_Id bigint(20) NOT NULL";
@@ -68,6 +90,7 @@ public class BaggingToolDatabase {
 			String s = null;
 			try {
 				s = (String) field.get(new Object());
+				String type = getFieldType(s);
 				String mod;
 				if (s.contentEquals(FeaturesConsts.flowSrcIpAddr)
 						|| s.contentEquals(FeaturesConsts.flowDstIpAddr)
@@ -75,12 +98,12 @@ public class BaggingToolDatabase {
 						|| s.contentEquals(FeaturesConsts.flowDstPort)
 						|| s.contentEquals(FeaturesConsts.flowProtocol)) {
 					mod = " NOT NULL";
-
+					type = "varchar(100)";
 				} else {
 					mod = " default NULL";
 				}
 
-				s = ", " + s + " varchar(100)" + mod;
+				s = ", " + s + " "+ type + mod;
 
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -90,7 +113,8 @@ public class BaggingToolDatabase {
 			result = result + s;
 
 		}
-		return result+ ", PRIMARY KEY (FlowId), KEY Output_Id (Output_Id)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
+		return result
+				+ ", PRIMARY KEY (FlowId), KEY Output_Id (Output_Id)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
 	}
 
 	public String getAllValidFeatures(FlowOutput output, int numFeatures) {

@@ -120,7 +120,7 @@ public class Main {
 
 /*
  * TODO: 
- * Softflowd InDstMac, OutDstMac, InSrcMac, OutSrcMac. What to do?
+ * transform dates to miliseconds
  * 
  * add a class label after bagging (we are assuming that every file will have
  * only ONE label)
@@ -128,20 +128,14 @@ public class Main {
  * Insert Start and End time as date into the DB!
  * 
  * Queries must take into consideration valid features!
- * 
- * 
- * 
- * 
- * Tranalyzer's duration check ip address if it doesn't have (softflowd and yaf
- * spec) get rid of it.
+
+ * Tranalyzer's duration 
  * 
  ***softflowd "M" (mega) features
  * 
  * YAF check ip addr (if it has endtime it's ok)
  * 
- * YAF: idle (or active when no duration ) means no backwards data
  * 
- * YAF: (icmp) [x:y] = port numbers
  * 
  ***YAF: flows that doesn't have endtime: endtime = 0, duration = 0
  * 

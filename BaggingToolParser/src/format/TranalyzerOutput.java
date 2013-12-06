@@ -15,6 +15,8 @@ public class TranalyzerOutput extends FlowOutput {
 	public TranalyzerOutput() {
 		super();
 		// Duration is calculated via preprocessing
+		featuresPresent.put(FeaturesConsts.flowUnixTimeFirst, 3);
+		featuresPresent.put(FeaturesConsts.flowUnixTimeLast, 4);
 		featuresPresent.put(FeaturesConsts.flowSrcIpAddr, 7);
 		featuresPresent.put(FeaturesConsts.flowSrcPort, 8);
 		featuresPresent.put(FeaturesConsts.flowDstIpAddr, 9);
@@ -44,8 +46,6 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowDir, 0);
 		featuresPresent.put(FeaturesConsts.flowInd, 1);
 		featuresPresent.put(FeaturesConsts.flowStat, 2);
-		featuresPresent.put(FeaturesConsts.flowUnixTimeFirst, 3);
-		featuresPresent.put(FeaturesConsts.flowUnixTimeLast, 4);
 		featuresPresent.put(FeaturesConsts.flowETHVlanID, 6);
 		featuresPresent.put(FeaturesConsts.flowNumP, 12);
 		featuresPresent.put(FeaturesConsts.flowDstPortClass, 13);

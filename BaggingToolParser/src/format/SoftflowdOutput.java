@@ -42,11 +42,11 @@ public class SoftflowdOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowSVLan, 29);
 		featuresPresent.put(FeaturesConsts.flowDVLan, 30);
 		// This below = InSrcMacAddr in file
-		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 31);
+		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 31);
 		// This below = OutDestMacAddr in file
 		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 32);
 		// This below = InDestMacAddr in file
-		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 33);
+		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 33);
 		// This below = OutSrcMacAddr in file
 		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 34);
 		featuresPresent.put(FeaturesConsts.flowEngine, 35);

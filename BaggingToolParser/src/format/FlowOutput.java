@@ -61,7 +61,9 @@ public abstract class FlowOutput {
 	 */
 	public void setUsedFeaturesWithCurrentPresentFeatures() {
 		for (Map.Entry<String, Integer> entry : featuresPresent.entrySet()) {
-			featuresUsed.add(entry.getKey());
+			if (entry.getValue() != FALSE) {
+				featuresUsed.add(entry.getKey());
+			}
 		}
 	}
 
@@ -141,9 +143,10 @@ public abstract class FlowOutput {
 		}
 	}
 
-	/** Can be overridden by an output to give it a chance to modify a raw flow
-	 before this flow is processed. If this method return null the
-	 whole flow is ignored
+	/**
+	 * Can be overridden by an output to give it a chance to modify a raw flow
+	 * before this flow is processed. If this method return null the whole flow
+	 * is ignored
 	 */
 	public Flow beforeProcessingRawFlow(Flow f) {
 		return f;
