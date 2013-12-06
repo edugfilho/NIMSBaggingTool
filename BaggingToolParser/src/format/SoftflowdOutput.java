@@ -9,6 +9,8 @@ import bagging.feature.FeaturesConsts;
 public class SoftflowdOutput extends FlowOutput {
 
 	public SoftflowdOutput() {
+		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
+		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
 		featuresPresent.put(FeaturesConsts.flowSrcIpAddr, 4);
 		featuresPresent.put(FeaturesConsts.flowSrcPort, 5);
 		featuresPresent.put(FeaturesConsts.flowDstIpAddr, 6);
@@ -26,8 +28,7 @@ public class SoftflowdOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowBytesPerPkt, 38);
 		setUsedFeaturesWithCurrentPresentFeatures();
 
-		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
-		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
+
 		featuresPresent.put(FeaturesConsts.flowNextHopIp, 8);
 		featuresPresent.put(FeaturesConsts.flowBGPNextHopIp, 9);
 		featuresPresent.put(FeaturesConsts.flowRouterIp, 10);

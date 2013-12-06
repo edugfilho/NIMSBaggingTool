@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import database.BaggingToolDatabase;
+import database.NetmateBagging;
+import database.SoftflowdBagging;
 import database.TranalyzerBagging;
+import database.YafBagging;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
 import format.SoftflowdOutput;
@@ -22,21 +25,18 @@ public class Main {
 		
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		db.resetDatabase();
-		testSoftflowd();
+		//testYaf();
 		
-		db.prepareAndExecuteQueries();
+		testSoftflowd();
 		//testNetmate();
 		//testTranalyzer();
-		//testYaf();
-		//
-
 	}
 
 	public static void testYaf() {
 		// YAF TESTS
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAF.txt");
+				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAFDemo.txt");
 		 //"/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa3-Yaf.txt");
 		YafOutput yafOut = new YafOutput();
 		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
@@ -49,8 +49,9 @@ public class Main {
 		yafOut.setOutputName(yafOut.getClass().toString()
 				+ dateFormat.format(cal.getTime()).toString());
 		db.saveOutputToDatabase(yafOut);
-
-		//db.saveOutputToDatabase(yafOut);
+		
+		YafBagging yafBag = new YafBagging();
+		db.performQueries(yafBag.getBaggingQuery());
 
 	}
 
@@ -73,7 +74,8 @@ public class Main {
 		netOut.setOutputName(netOut.getClass().toString()
 				+ dateFormat.format(cal.getTime()).toString());
 		db.saveOutputToDatabase(netOut);
-		//db.prepareAndExecuteQueries();
+		NetmateBagging netBag = new NetmateBagging();
+		db.performQueries(netBag.getBaggingQuery());
 	}
 	public static void testSoftflowd() {
 
@@ -94,7 +96,8 @@ public class Main {
 		//softOut.setOutputName(softOut.getClass().toString()
 				//+ dateFormat.format(cal.getTime()).toString());
 		db.saveOutputToDatabase(softOut);
-		//db.prepareAndExecuteQueries();
+		SoftflowdBagging softBag = new SoftflowdBagging();
+		db.performQueries(softBag.getBaggingQuery());
 	}
 	
 	public static void testTranalyzer() {
@@ -116,7 +119,8 @@ public class Main {
 		//softOut.setOutputName(softOut.getClass().toString()
 			//	+ dateFormat.format(cal.getTime()).toString());
 		db.saveOutputToDatabase(tranOut);
-		//db.prepareAndExecuteQueries();
+		TranalyzerBagging tBag = new TranalyzerBagging();
+		db.performQueries(tBag.getBaggingQuery());
 	}
 	
 }

@@ -9,10 +9,10 @@ import bagging.feature.FeaturesConsts;
 public class YafOutput extends FlowOutput {
 
 	public YafOutput() {
+		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
+		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
 		featuresPresent.put(FeaturesConsts.flowDuration, 2);
-
 		featuresPresent.put(FeaturesConsts.flowRtt, 3);
-
 		featuresPresent.put(FeaturesConsts.flowProtocol, 4);
 		featuresPresent.put(FeaturesConsts.flowSrcIpAddr, 5);
 		featuresPresent.put(FeaturesConsts.flowSrcPort, 6);
@@ -28,8 +28,7 @@ public class YafOutput extends FlowOutput {
 
 		// Not used features
 
-		featuresPresent.put(FeaturesConsts.flowStartTime, 0);
-		featuresPresent.put(FeaturesConsts.flowEndTime, 1);
+		
 		featuresPresent.put(FeaturesConsts.flowRtt, 3);
 		featuresPresent.put(FeaturesConsts.flowSrcMacAddr, 9);
 		featuresPresent.put(FeaturesConsts.flowDstMacAddr, 10);
@@ -73,7 +72,7 @@ public class YafOutput extends FlowOutput {
 				|| fieldName.contentEquals(FeaturesConsts.flowEndTime)) {
 			Date date = null;
 			try {
-				date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(f.get(flowIndex));
+				date = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss.S").parse(f.get(flowIndex));
 			
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block

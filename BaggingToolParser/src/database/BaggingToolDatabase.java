@@ -218,50 +218,34 @@ public class BaggingToolDatabase {
 			connect();
 			st = con.createStatement();
 			rs = st.executeQuery(query);
-			int columns = rs.getMetaData().getColumnCount();
+			/*int columns = rs.getMetaData().getColumnCount();
 			while (rs.next()) {
 				for (int i = 1; i <= columns; i++) {
 					result += rs.getString(i) + ", ";
 				}
 				result += "\n";
 
-			}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(result);
+		//System.out.println(result);
 		return result;
 	}
 
 	public void prepareAndExecuteQueries() {
 		//TranalyzerBagging tBag = new TranalyzerBagging();
 		//NetmateBagging netBag = new NetmateBagging();
-		SoftflowdBagging softBag = new SoftflowdBagging();
+		//SoftflowdBagging softBag = new SoftflowdBagging();
+		YafBagging yafBag = new YafBagging();
 
 		//performQueries(tBag.getBaggingQuery());
 		//performQueries(netBag.getBaggingQuery());
-		performQueries(softBag.getBaggingQuery());
+		//performQueries(softBag.getBaggingQuery());
+		performQueries(yafBag.getBaggingQuery());
 
 
 	}
 
-	public void printToFile(String content, String fname) {
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter(
-					"C:/Users/Eduardo/Documents/NIMS/baggingTool/Output"
-							+ fname, "UTF-8");// "/home/eduardo/NIMSBaggingTool/output"
-			// + fname, "UTF-8");
-			writer.println(content);
-			writer.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 }
