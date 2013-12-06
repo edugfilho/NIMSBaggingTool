@@ -14,7 +14,7 @@ public class FeaturesConsts {
 	public static final String flowMinPktSz = "MinPktSize";
 	public static final String flowMaxPktSz = "MaxPktSz";
 	public static final String flowAvgPktSz = "AvgPktSz";
-	public static final String flowIpMinTTl = "IpMinTTL";
+	public static final String flowIpMinTTL = "IpMinTTL";
 	public static final String flowIpMaxTTL = "IpMaxTTL";
 	public static final String flowIpTTLChg = "IPTTLChg";
 	public static final String flowTcpInitWinSz ="TcpInitWinSz";

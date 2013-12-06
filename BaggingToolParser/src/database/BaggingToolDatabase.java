@@ -27,6 +27,7 @@ public class BaggingToolDatabase {
 	private static final String url = "jdbc:mysql://localhost:3306/baggingtool";
 	private static final String user = "root";
 	private static final String password = "root";
+	private static final String VARCHAR_SIZE = "200";
 	private Connection con = null;
 
 	private void connect() throws SQLException {
@@ -80,7 +81,7 @@ public class BaggingToolDatabase {
 		
 		if(allFeaturesUsed.contains(fieldName)){
 			return "double";
-		}else return "varchar(100)";
+		}else return "varchar("+VARCHAR_SIZE+")";
 	}
 
 	public String mountFlowTableCreationStatement() {
@@ -98,7 +99,7 @@ public class BaggingToolDatabase {
 						|| s.contentEquals(FeaturesConsts.flowDstPort)
 						|| s.contentEquals(FeaturesConsts.flowProtocol)) {
 					mod = " NOT NULL";
-					type = "varchar(100)";
+					type = "varchar("+VARCHAR_SIZE+")";
 				} else {
 					mod = " default NULL";
 				}
@@ -148,6 +149,12 @@ public class BaggingToolDatabase {
 			}
 			if (output.getClass() == YafOutput.class) {
 				insertOutput = insertOutput + ", 'YAF')";
+			}
+			if (output.getClass() == TranalyzerOutput.class) {
+				insertOutput = insertOutput + ", 'Tranalyzer')";
+			}
+			if (output.getClass() == SoftflowdOutput.class) {
+				insertOutput = insertOutput + ", 'Softflowd')";
 			}
 
 			st = con.createStatement();
@@ -223,15 +230,15 @@ public class BaggingToolDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(result);
 		return result;
 	}
 
 	public void prepareAndExecuteQueries() {
-		String query1 = "SELECT * FROM flows GROUP BY "
-				+ FeaturesConsts.flowSrcIpAddr + ","
-				+ FeaturesConsts.flowSrcPort;
+		TranalyzerBagging tBag = new TranalyzerBagging();
+		
 
-		printToFile(performQueries(query1), "query1.txt");
+		performQueries(tBag.getBaggingQuery());
 
 	}
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import database.BaggingToolDatabase;
+import database.TranalyzerBagging;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
 import format.SoftflowdOutput;
@@ -20,12 +21,15 @@ public class Main {
 	public static void main(String[] args) {
 		
 		BaggingToolDatabase db = new BaggingToolDatabase();
+		TranalyzerBagging traBag = new TranalyzerBagging();
+		//System.out.println(traBag.getBaggingQuery());
 		db.resetDatabase();
-		//db.prepareAndExecuteQueries();
+		testTranalyzer();
+		db.prepareAndExecuteQueries();
 		//testNetmate();
 		//testYaf();
 		//testSoftflowd();
-		//testTranalyzer();
+		testTranalyzer();
 
 	}
 
@@ -98,7 +102,7 @@ public class Main {
 		// NETMATE TESTS
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/tranalyzer_demo");
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/tranalyzer_demo.txt");
 
 				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa_Tranalzer.txt");
 
@@ -106,13 +110,13 @@ public class Main {
 		ArrayList<Flow> rawData = tranOut.getRawDataFromFile(f);
 
 		tranOut.setOutputFlowsFromRawData(rawData);
-		tranOut.printOutFlows();
+		//tranOut.printOutFlows();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		//softOut.setOutputName(softOut.getClass().toString()
 			//	+ dateFormat.format(cal.getTime()).toString());
-		//db.saveOutputToDatabase(softOut);
+		db.saveOutputToDatabase(tranOut);
 		//db.prepareAndExecuteQueries();
 	}
 	
@@ -120,6 +124,9 @@ public class Main {
 
 /*
  * TODO: 
+ * ASSUMED tranalyzer: Overall ipTTLChg = total = sum.
+ * median of MedianIat = std of medianIAT right now
+ * 
  * transform dates to miliseconds
  * 
  * add a class label after bagging (we are assuming that every file will have

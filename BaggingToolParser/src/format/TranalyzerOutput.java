@@ -28,7 +28,7 @@ public class TranalyzerOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowMinPktSz, 18);
 		featuresPresent.put(FeaturesConsts.flowMaxPktSz, 19);
 		featuresPresent.put(FeaturesConsts.flowAvgPktSz, 20);
-		featuresPresent.put(FeaturesConsts.flowIpMinTTl, 27);
+		featuresPresent.put(FeaturesConsts.flowIpMinTTL, 27);
 		featuresPresent.put(FeaturesConsts.flowIpMaxTTL, 28);
 		featuresPresent.put(FeaturesConsts.flowIpTTLChg, 29);
 		featuresPresent.put(FeaturesConsts.flowTcpInitWinSz, 40);
@@ -157,8 +157,8 @@ public class TranalyzerOutput extends FlowOutput {
 		String numP = st.nextElement().toString();
 		f.set(12, numP);
 		
-		int a = f.size();
-		System.out.println(a);
+		//int a = f.size();
+		//System.out.println(a);
 		return f;
 	}
 
