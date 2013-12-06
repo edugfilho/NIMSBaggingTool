@@ -56,10 +56,10 @@ public class FeaturesConsts {
 	public static final String flowMinIdle = "MinIdle";
 	public static final String flowMaxIdle = "MaxIdle";
 	public static final String flowStdIdle = "StdIdle";
-	public static final String flowSubflowAvgNumFwdPkt = "SubFlowAvgNumFwdPkt";
-	public static final String flowSubFlowAvgFwdSz ="SubFlowAvgFwdSz";
-	public static final String flowSubflowAvgNumBwdPkt = "SubFlowAvgNumBwdPkt";
-	public static final String flowSubFlowAvgBwdSz ="SubFlowAvgBwdSz";
+	public static final String flowSubflowNumFwdPkt = "SubFlowAvgNumFwdPkt";
+	public static final String flowSubFlowFwdSz ="SubFlowAvgFwdSz";
+	public static final String flowSubflowNumBwdPkt = "SubFlowAvgNumBwdPkt";
+	public static final String flowSubFlowBwdSz ="SubFlowAvgBwdSz";
 	public static final String flowHeaderFwdTotalSz = "HeaderTotalFwdSz";
 	public static final String flowHeaderBwdTotalSz = "HeaderTotalBwdSz";
 	

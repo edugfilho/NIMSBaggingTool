@@ -235,10 +235,12 @@ public class BaggingToolDatabase {
 	}
 
 	public void prepareAndExecuteQueries() {
-		TranalyzerBagging tBag = new TranalyzerBagging();
-		
+		//TranalyzerBagging tBag = new TranalyzerBagging();
+		NetmateBagging netBag = new NetmateBagging();
 
-		performQueries(tBag.getBaggingQuery());
+		//performQueries(tBag.getBaggingQuery());
+		performQueries(netBag.getBaggingQuery());
+
 
 	}
 

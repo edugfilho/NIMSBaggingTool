@@ -24,12 +24,12 @@ public class Main {
 		TranalyzerBagging traBag = new TranalyzerBagging();
 		//System.out.println(traBag.getBaggingQuery());
 		db.resetDatabase();
-		testTranalyzer();
+		testNetmate();
+		
 		db.prepareAndExecuteQueries();
-		//testNetmate();
+		//testTranalyzer();
 		//testYaf();
 		//testSoftflowd();
-		testTranalyzer();
 
 	}
 
@@ -59,7 +59,7 @@ public class Main {
 		// NETMATE TESTS
 		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(
-		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-Netmate.txt");
+		 "C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-NetmateDemo.txt");
 
 				//"/home/eduardo/Desktop/NIMS/NewBaggingTool/FlowSamples/Alexa-Netmate.txt");
 

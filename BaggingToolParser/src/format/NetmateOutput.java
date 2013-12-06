@@ -39,10 +39,10 @@ public class NetmateOutput extends FlowOutput {
 		featuresPresent.put(FeaturesConsts.flowMinIdle, 30);
 		featuresPresent.put(FeaturesConsts.flowMaxIdle, 32);
 		featuresPresent.put(FeaturesConsts.flowStdIdle, 33);
-		featuresPresent.put(FeaturesConsts.flowSubflowAvgNumFwdPkt, 34);
-		featuresPresent.put(FeaturesConsts.flowSubFlowAvgFwdSz, 35);
-		featuresPresent.put(FeaturesConsts.flowSubflowAvgNumBwdPkt, 36);
-		featuresPresent.put(FeaturesConsts.flowSubFlowAvgBwdSz, 37);
+		featuresPresent.put(FeaturesConsts.flowSubflowNumFwdPkt, 34);
+		featuresPresent.put(FeaturesConsts.flowSubFlowFwdSz, 35);
+		featuresPresent.put(FeaturesConsts.flowSubflowNumBwdPkt, 36);
+		featuresPresent.put(FeaturesConsts.flowSubFlowBwdSz, 37);
 		featuresPresent.put(FeaturesConsts.flowHeaderFwdTotalSz, 42);
 		featuresPresent.put(FeaturesConsts.flowHeaderBwdTotalSz, 43);
 		setUsedFeaturesWithCurrentPresentFeatures();
