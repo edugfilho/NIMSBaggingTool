@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import util.Util;
+import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 import format.FlowOutput;
 import format.FlowOutput.Flow;
@@ -122,7 +122,7 @@ public class BaggingToolDatabase {
 	public String getAllValidFeatures(FlowOutput output, int numFeatures) {
 		String insertFlows = "";
 		int index = 0;
-		for (Entry<String, Integer> entry : Util.entriesSortedByValues(output
+		for (Entry<String, Integer> entry : BaggingToolUtil.entriesSortedByValues(output
 				.getFeaturesPresent())) {
 
 			// To be inserted, a feature must exist in an output
@@ -233,20 +233,6 @@ public class BaggingToolDatabase {
 		}
 		//System.out.println(result);
 		return result;
-	}
-
-	public void prepareAndExecuteQueries() {
-		//TranalyzerBagging tBag = new TranalyzerBagging();
-		//NetmateBagging netBag = new NetmateBagging();
-		//SoftflowdBagging softBag = new SoftflowdBagging();
-		YafBagging yafBag = new YafBagging();
-
-		//performQueries(tBag.getBaggingQuery());
-		//performQueries(netBag.getBaggingQuery());
-		//performQueries(softBag.getBaggingQuery());
-		performQueries(yafBag.getBaggingQuery());
-
-
 	}
 
 }

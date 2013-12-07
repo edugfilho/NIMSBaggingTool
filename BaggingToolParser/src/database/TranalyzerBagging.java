@@ -1,12 +1,17 @@
 package database;
 
+import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
 public class TranalyzerBagging {
 
 	String baggingQuery;
 
-	public TranalyzerBagging() {
+	/**
+	 * 
+	 * @param outputName The name of the parsed flow output, as it was stored in the database
+	 */
+	public TranalyzerBagging(String outputName) {
 		baggingQuery = "SELECT "
 				+ FeaturesConsts.flowSrcIpAddr
 				+ ", "
@@ -18,7 +23,7 @@ public class TranalyzerBagging {
 				+ ", "
 				+ "(MAX("+FeaturesConsts.flowUnixTimeLast
 				+ ")-MIN("+ FeaturesConsts.flowUnixTimeFirst+ ")) "
-				+ "AS totalDuration, "
+				+ "AS totalDurationMillisec, "
 				+ "MAX("+FeaturesConsts.flowDuration+") AS maxFlowDuration, "
 				+ "MIN("+FeaturesConsts.flowDuration+") AS minFlowDuration, "
 				+ "AVG("+FeaturesConsts.flowDuration+") AS avgFlowDuration, "
@@ -55,7 +60,8 @@ public class TranalyzerBagging {
 				+ "STD("+FeaturesConsts.flowStdIAT+") AS stdRangeIat, "
 				+ "AVG("+FeaturesConsts.flowMedianIAT+") AS avgMedianIat "
 				+ ""
-				+ "INTO OUTFILE '/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out/outTranalyzer.txt' FROM flows GROUP BY "
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outTranalyzer.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "
 				+ FeaturesConsts.flowSrcPort + ", "

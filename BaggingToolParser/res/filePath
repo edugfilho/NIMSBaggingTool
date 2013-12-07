@@ -1,0 +1,10 @@
+NETMATE_FLOWS=C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-NetmateDemo.txt
+SOFTFLOWD_FLOWS=C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-softflowdDemo.txt
+TRANALYZER_FLOWS=C:/Users/Eduardo/Documents/NIMS/Flow samples/tranalyzer_demo.txt
+YAF_FLOWS=C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa3-YAFDemo.txt
+NETMATE_EXE=
+SOFTFLOWD_EXE=
+TRANALYZER_EXE=
+YAF_EXE=
+
+OUTPUT_FOLDER=C:/Users/Eduardo/Documents/NIMS/baggingTool/Output/

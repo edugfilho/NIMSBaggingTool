@@ -1,12 +1,17 @@
 package database;
 
+import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
 public class NetmateBagging {
 
 	String baggingQuery;
 
-	public NetmateBagging() {
+	/**
+	 * 
+	 * @param outputName The name of the parsed flow output, as it was stored in the database
+	 */
+	public NetmateBagging(String outputName) {
 
 		baggingQuery = "SELECT "
 				+ FeaturesConsts.flowSrcIpAddr
@@ -118,7 +123,9 @@ public class NetmateBagging {
 				+ "STD("+FeaturesConsts.flowHeaderBwdTotalSz+") AS stdHeaderBwdSz "
 
 				+ ""
-				+ "INTO OUTFILE '/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out/outNetmate.txt' FROM flows GROUP BY "
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outNetmate.txt'" +
+						" FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "
 				+ FeaturesConsts.flowSrcPort + ", "

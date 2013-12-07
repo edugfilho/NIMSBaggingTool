@@ -1,12 +1,17 @@
 package database;
 
+import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
 public class YafBagging {
 
 	String baggingQuery;
 
-	public YafBagging(){
+	/**
+	 * 
+	 * @param outputName The name of the parsed flow output, as it was stored in the database
+	 */
+	public YafBagging(String outputName){
 		
 		baggingQuery = "SELECT "
 				+ FeaturesConsts.flowSrcIpAddr
@@ -20,7 +25,7 @@ public class YafBagging {
 				+ FeaturesConsts.flowProtocol+" AS protocol, "
 				+ "(MAX("+FeaturesConsts.flowEndTime
 				+ ")-MIN("+ FeaturesConsts.flowStartTime+ ")) "
-				+ "AS totalDuration, "
+				+ "AS totalDurationMillisec, "
 				+ "SUM("+FeaturesConsts.flowDuration+") AS sumFlowDuration, "
 				+ "MAX("+FeaturesConsts.flowDuration+") AS maxFlowDuration, "
 				+ "MIN("+FeaturesConsts.flowDuration+") AS minFlowDuration, "
@@ -55,7 +60,8 @@ public class YafBagging {
 
 		
 				+ ""
-				+ " INTO OUTFILE '/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out/outYaf.txt' FROM flows GROUP BY "
+				+ " INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outYaf.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "
 				+ FeaturesConsts.flowSrcPort + ", "

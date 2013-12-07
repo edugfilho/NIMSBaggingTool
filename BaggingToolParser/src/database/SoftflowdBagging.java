@@ -1,12 +1,17 @@
 package database;
 
+import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
 public class SoftflowdBagging {
 
 	String baggingQuery;
 
-	public SoftflowdBagging() {
+	/**
+	 * 
+	 * @param outputName The name of the parsed flow output, as it was stored in the database
+	 */
+	public SoftflowdBagging(String outputName) {
 
 		baggingQuery = "SELECT "
 				+ FeaturesConsts.flowSrcIpAddr
@@ -21,7 +26,7 @@ public class SoftflowdBagging {
 				+ " AS protocol, "
 				+ "(MAX("+FeaturesConsts.flowEndTime
 				+ ")-MIN("+ FeaturesConsts.flowStartTime+ ")) "
-				+ "AS totalDuration, "
+				+ "AS totalDurationMillisec, "
 				+ "MAX("+FeaturesConsts.flowDuration+") AS maxFlowDuration, "
 				+ "MIN("+FeaturesConsts.flowDuration+") AS minFlowDuration, "
 				+ "AVG("+FeaturesConsts.flowDuration+") AS avgFlowDuration, "
@@ -74,7 +79,8 @@ public class SoftflowdBagging {
 				
 				
 				+ ""
-				+ "INTO OUTFILE '/home/eduardo/NIMS/NewBaggingTool/FlowSamples/out/outSoftflowd.txt' FROM flows GROUP BY "
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outSoftflowd.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "
 				+ FeaturesConsts.flowSrcPort + ", "
