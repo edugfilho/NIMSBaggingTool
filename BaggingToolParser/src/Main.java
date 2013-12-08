@@ -45,13 +45,17 @@ public class Main {
 		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
 
 		yafOut.setOutputFlowsFromRawData(rawData);
-		yafOut.printOutFlows();
-
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		yafOut.setOutputName(yafOut.getClass().getSimpleName()
 				+ dateFormat.format(cal.getTime()).toString());
 		db.saveOutputToDatabase(yafOut);
+		
+		yafOut.printOutFlows();
+
+		
+		
 
 		YafBagging yafBag = new YafBagging(yafOut.getOutputName());
 		db.performQueries(yafBag.getBaggingQuery());
@@ -73,13 +77,18 @@ public class Main {
 		NetmateOutput netOut = new NetmateOutput();
 		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
 
+		
+		
 		netOut.setOutputFlowsFromRawData(rawData);
-		netOut.printOutFlows();
-
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		netOut.setOutputName(netOut.getClass().getSimpleName()
 				+ dateFormat.format(cal.getTime()).toString());
+		
+		netOut.printOutFlows();
+
+		
 		db.saveOutputToDatabase(netOut);
 		NetmateBagging netBag = new NetmateBagging(netOut.getOutputName());
 		db.performQueries(netBag.getBaggingQuery());
@@ -96,12 +105,15 @@ public class Main {
 		ArrayList<Flow> rawData = softOut.getRawDataFromFile(f);
 
 		softOut.setOutputFlowsFromRawData(rawData);
-		softOut.printOutFlows();
-
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		softOut.setOutputName(softOut.getClass().getSimpleName()
 				+ dateFormat.format(cal.getTime()).toString());
+		
+		softOut.printOutFlows();
+
+
 		db.saveOutputToDatabase(softOut);
 		SoftflowdBagging softBag = new SoftflowdBagging(softOut.getOutputName());
 		db.performQueries(softBag.getBaggingQuery());
@@ -118,12 +130,15 @@ public class Main {
 		ArrayList<Flow> rawData = tranOut.getRawDataFromFile(f);
 
 		tranOut.setOutputFlowsFromRawData(rawData);
-		tranOut.printOutFlows();
-
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		tranOut.setOutputName(tranOut.getClass().getSimpleName()
 				+ dateFormat.format(cal.getTime()).toString());
+		
+		tranOut.printOutFlows();
+
+
 		db.saveOutputToDatabase(tranOut);
 		TranalyzerBagging tBag = new TranalyzerBagging(tranOut.getOutputName());
 		db.performQueries(tBag.getBaggingQuery());
