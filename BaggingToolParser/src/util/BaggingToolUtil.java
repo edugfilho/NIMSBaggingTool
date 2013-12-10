@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.SortedSet;
@@ -24,6 +27,12 @@ public class BaggingToolUtil {
 				});
 		sortedEntries.addAll(map.entrySet());
 		return sortedEntries;
+	}
+	
+	public static String getTimeStamp(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		Calendar cal = Calendar.getInstance();
+		return dateFormat.format(cal.getTime()).toString();
 	}
 
 	public static String getPath(String what) {

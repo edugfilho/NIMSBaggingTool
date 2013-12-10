@@ -77,8 +77,21 @@ public abstract class FlowOutput {
 		this.featuresPresent = featuresPresent;
 	}
 
-	public ArrayList<Flow> getRawDataFromFile(File file) {
-		String splitToken = getSeparator();
+	/**
+	 * Gets the flows from the flow file the way they are. If they are
+	 * previously processed, just grabs them as they are. If they are not,
+	 * processes them.
+	 * 
+	 * @param file
+	 *            The file from where to get the flows
+	 * @param fileLevel
+	 *            The initial level of the flows (1 = pcap, 2 = non-processed
+	 *            flow, 3 = processed flow)
+	 * @return The flows from the file
+	 */
+	public ArrayList<Flow> getRawDataFromFile(File file, int fileLevel) {
+		
+		String splitToken = (fileLevel == 3) ? getOutputSeparator() : getSeparator();
 		ArrayList<Flow> data = new ArrayList<Flow>();
 		BufferedReader br;
 
@@ -112,8 +125,12 @@ public abstract class FlowOutput {
 		return data;
 	}
 
-	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData) {
+	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData, int fileLevel) {
 
+		if(fileLevel == 3){
+			outputFlows = rawData;
+			return;
+		}
 		// RawIndex means the position of a given feature inside a flow.
 		int rawIndex = 0;
 
@@ -236,7 +253,7 @@ public abstract class FlowOutput {
 
 				// System.out.println("");
 				for (String string : flow) {
-					writer.print(string + "\t");
+					writer.print(string + getOutputSeparator());
 					// System.out.print(string + "\t");
 				}
 				writer.println("");
@@ -251,6 +268,9 @@ public abstract class FlowOutput {
 
 	}
 
+	public String getOutputSeparator(){
+		return "\t";
+	}
 	public ArrayList<String> getFeaturesUsed() {
 		return featuresUsed;
 	}

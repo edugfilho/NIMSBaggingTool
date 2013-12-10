@@ -3,9 +3,7 @@ package database;
 import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
-public class YafBagging {
-
-	String baggingQuery;
+public class YafBagging extends OutputBagging{
 
 	/**
 	 * 
@@ -60,7 +58,7 @@ public class YafBagging {
 
 		
 				+ ""
-				+ " INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outYaf.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+				+ " INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"grouped_Yaf_Output"+BaggingToolUtil.getTimeStamp()+".txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
 						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "

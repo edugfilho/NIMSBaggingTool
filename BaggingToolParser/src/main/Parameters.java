@@ -9,8 +9,11 @@ public class Parameters {
 	 * http://beust.com/jcommander/#Parameter_validation
 	 */
 
-	@Parameter(names = { "-pcap", "-p" }, description = "Start processing from .pcap file (must specify a tool)")
+	@Parameter(names = {"-pcap", "-l1", "L1"}, description = "Start processing from .pcap file (must specify a tool)")
 	public Boolean startFromPcap = false;
+	
+	@Parameter(names = {"-processed", "-l3", "-L3" }, description = "Start the process from a previously processed file")
+	public Boolean fileProcessed = false;
 
 	@Parameter(names = { "-netmate", "-net" }, description = "Use Netmate tool for processing")
 	public Boolean useNetmate = false;

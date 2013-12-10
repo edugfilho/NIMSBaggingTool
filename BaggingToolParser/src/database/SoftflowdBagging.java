@@ -3,9 +3,8 @@ package database;
 import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
-public class SoftflowdBagging {
+public class SoftflowdBagging extends OutputBagging {
 
-	String baggingQuery;
 
 	/**
 	 * 
@@ -79,7 +78,7 @@ public class SoftflowdBagging {
 				
 				
 				+ ""
-				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outSoftflowd.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"grouped_Softflowd_Output"+BaggingToolUtil.getTimeStamp()+".txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
 						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "

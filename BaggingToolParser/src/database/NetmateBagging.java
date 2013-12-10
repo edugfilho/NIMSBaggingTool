@@ -3,9 +3,7 @@ package database;
 import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
-public class NetmateBagging {
-
-	String baggingQuery;
+public class NetmateBagging extends OutputBagging{
 
 	/**
 	 * 
@@ -123,7 +121,7 @@ public class NetmateBagging {
 				+ "STD("+FeaturesConsts.flowHeaderBwdTotalSz+") AS stdHeaderBwdSz "
 
 				+ ""
-				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outNetmate.txt'" +
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"grouped_Netmate_Output"+BaggingToolUtil.getTimeStamp()+".txt'" +
 						" FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
 						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "

@@ -3,9 +3,8 @@ package database;
 import util.BaggingToolUtil;
 import bagging.feature.FeaturesConsts;
 
-public class TranalyzerBagging {
+public class TranalyzerBagging extends OutputBagging{
 
-	String baggingQuery;
 
 	/**
 	 * 
@@ -60,7 +59,7 @@ public class TranalyzerBagging {
 				+ "STD("+FeaturesConsts.flowStdIAT+") AS stdRangeIat, "
 				+ "AVG("+FeaturesConsts.flowMedianIAT+") AS avgMedianIat "
 				+ ""
-				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"outTranalyzer.txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
+				+ "INTO OUTFILE '"+BaggingToolUtil.getPath("OUTPUT_FOLDER")+"grouped_Tranalyzer_Output"+BaggingToolUtil.getTimeStamp()+".txt' FROM flows JOIN output ON flows.Output_Id=output.output_id AND" +
 						" output.OutputName LIKE '"+outputName+"' GROUP BY "
 				+ FeaturesConsts.flowSrcIpAddr + ", "
 				+ FeaturesConsts.flowDstIpAddr + ", "

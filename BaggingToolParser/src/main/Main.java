@@ -5,16 +5,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
 
 import util.BaggingToolUtil;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 
 import database.BaggingToolDatabase;
 import database.NetmateBagging;
+import database.OutputBagging;
 import database.SoftflowdBagging;
 import database.TranalyzerBagging;
 import database.YafBagging;
+import format.FlowOutput;
 import format.FlowOutput.Flow;
 import format.NetmateOutput;
 import format.SoftflowdOutput;
@@ -23,9 +27,8 @@ import format.YafOutput;
 
 public class Main {
 
-
-
 	private static BaggingToolDatabase db = null;
+	private static int inputLevel;
 
 	/**
 	 * @param args
@@ -34,134 +37,123 @@ public class Main {
 
 		Parameters param = new Parameters();
 		new JCommander(param, args);
-		 
-		//param.
+		initLevel(param);
+		String filePath;
+		if(param.startFromPcap){
+			filePath = phaseOne(param.filePath);
+			inputLevel = 2;
+		}else{
+			filePath = param.filePath;
+		}
+		
+		
+		// param.
 
-		//BaggingToolDatabase db = new BaggingToolDatabase();
+		// BaggingToolDatabase db = new BaggingToolDatabase();
 		// db.resetDatabase();
-		// testYaf();
-		// testSoftflowd();
-		// testNetmate();
+		//testYaf();
+		//testSoftflowd();
+		//testNetmate();
 		//testTranalyzer();
-		
-		
+
 	}
-	
-	public void doMain(){
-		
+
+	/**
+	 * Initializes the initial level of the file to be processed
+	 * @param p
+	 */
+	private static void initLevel(Parameters p) throws ParameterException{
+		if(p.startFromPcap && p.fileProcessed){
+			throw new ParameterException("File cannot be a .pcap processed!");
+		}
+		inputLevel = 1;
+		if(!p.startFromPcap){
+			inputLevel++;
+		}
+		if(p.fileProcessed){
+			inputLevel++;
+		}
+	}
+	/**
+	 * phaseOne is responsible for calling a flow tool to process a .pcap file
+	 * and output a flow file.
+	 */
+	public static String phaseOne(String inputFilePath) {
+		return null; //the path of the output file saved by 
+	}
+
+	/**
+	 * phaseTwo uses a flow file to process it and outputs another flow file,
+	 * ready to phase 3.
+	 */
+	public static void phaseTwo(FlowOutput output, File f) {
+		ArrayList<Flow> rawData = output.getRawDataFromFile(f, inputLevel);
+
+		output.setOutputFlowsFromRawData(rawData, inputLevel);
+
+		output.setOutputName(output.getClass().getSimpleName()
+				+ BaggingToolUtil.getTimeStamp());
+
+		output.printOutFlows(BaggingToolUtil.getPath("OUTPUT_FOLDER") + "flow_"
+				+ output.getOutputName() + ".txt");
+	}
+
+	/**
+	 * phaseThree inserts a processed flow file into a database and groups them.
+	 */
+	public static void phaseThree(FlowOutput output, OutputBagging outBagging) {
+
+		db = new BaggingToolDatabase();
+		db.saveOutputToDatabase(output);
+		db.performQueries(outBagging.getBaggingQuery());
 	}
 
 	public static void testYaf() {
-		// YAF TESTS
-		File file = new File(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "outYaf.txt");
 
-		file.delete();
-		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(BaggingToolUtil.getPath("YAF_FLOWS"));
 		YafOutput yafOut = new YafOutput();
-		ArrayList<Flow> rawData = yafOut.getRawDataFromFile(f);
 
-		yafOut.setOutputFlowsFromRawData(rawData);
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Calendar cal = Calendar.getInstance();
-		yafOut.setOutputName(yafOut.getClass().getSimpleName()
-				+ dateFormat.format(cal.getTime()).toString());
-		db.saveOutputToDatabase(yafOut);
-
-		yafOut.printOutFlows(BaggingToolUtil.getPath("OUTPUT_FOLDER") + "flow_"
-				+ yafOut.getOutputName() + ".txt");
+		phaseTwo(yafOut, f);
 
 		YafBagging yafBag = new YafBagging(yafOut.getOutputName());
-		db.performQueries(yafBag.getBaggingQuery());
+		phaseThree(yafOut, yafBag);
 
 	}
 
 	public static void testNetmate() {
-		// NETMATE TESTS
-		File file = new File(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "outNetmate.txt");
 
-		file.delete();
-		BaggingToolDatabase db = new BaggingToolDatabase();
-		File f = new File(
-				"C:/Users/Eduardo/Documents/NIMS/Flow samples/Alexa-NetmateDemo.txt");
-
-		// "/home/eduardo/NIMS/NewBaggingTool/FlowSamples/Alexa-NetmateDemo.txt");
-
+		File f = new File(BaggingToolUtil.getPath("NETMATE_FLOWS"));
 		NetmateOutput netOut = new NetmateOutput();
-		ArrayList<Flow> rawData = netOut.getRawDataFromFile(f);
+		phaseTwo(netOut, f);
 
-		netOut.setOutputFlowsFromRawData(rawData);
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Calendar cal = Calendar.getInstance();
-		netOut.setOutputName(netOut.getClass().getSimpleName()
-				+ dateFormat.format(cal.getTime()).toString());
-
-		netOut.printOutFlows(BaggingToolUtil.getPath("OUTPUT_FOLDER") + "flow_"
-				+ netOut.getOutputName() + ".txt");
-
-		db.saveOutputToDatabase(netOut);
 		NetmateBagging netBag = new NetmateBagging(netOut.getOutputName());
-		db.performQueries(netBag.getBaggingQuery());
+		phaseThree(netOut, netBag);
+
 	}
 
 	public static void testSoftflowd() {
-		File file = new File(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "outSoftflowd.txt");
 
-		file.delete();
-		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(BaggingToolUtil.getPath("SOFTFLOWD_FLOWS"));
 
 		SoftflowdOutput softOut = new SoftflowdOutput();
-		ArrayList<Flow> rawData = softOut.getRawDataFromFile(f);
+		phaseTwo(softOut, f);
 
-		softOut.setOutputFlowsFromRawData(rawData);
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Calendar cal = Calendar.getInstance();
-		softOut.setOutputName(softOut.getClass().getSimpleName()
-				+ dateFormat.format(cal.getTime()).toString());
-
-		softOut.printOutFlows(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "flow_" + softOut.getOutputName() + ".txt");
-
-		db.saveOutputToDatabase(softOut);
 		SoftflowdBagging softBag = new SoftflowdBagging(softOut.getOutputName());
-		db.performQueries(softBag.getBaggingQuery());
+		phaseThree(softOut, softBag);
+
 	}
 
 	public static void testTranalyzer() {
-		File file = new File(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "outTranalyzer.txt");
 
-		file.delete();
-		BaggingToolDatabase db = new BaggingToolDatabase();
 		File f = new File(BaggingToolUtil.getPath("TRANALYZER_FLOWS"));
 
 		TranalyzerOutput tranOut = new TranalyzerOutput();
-		ArrayList<Flow> rawData = tranOut.getRawDataFromFile(f);
+		phaseTwo(tranOut, f);
 
-		tranOut.setOutputFlowsFromRawData(rawData);
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Calendar cal = Calendar.getInstance();
-		tranOut.setOutputName(tranOut.getClass().getSimpleName()
-				+ dateFormat.format(cal.getTime()).toString());
-
-		tranOut.printOutFlows(BaggingToolUtil.getPath("OUTPUT_FOLDER")
-				+ "flow_" + tranOut.getOutputName() + ".txt");
-
-		db.saveOutputToDatabase(tranOut);
 		TranalyzerBagging tBag = new TranalyzerBagging(tranOut.getOutputName());
-		db.performQueries(tBag.getBaggingQuery());
+		phaseThree(tranOut, tBag);
 
 	}
-
-
 
 	public static BaggingToolDatabase getDb() {
 		return db;
