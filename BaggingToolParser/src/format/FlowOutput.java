@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,6 +140,9 @@ public abstract class FlowOutput {
 				}
 				outputFlows.add(tempFlow);
 				// featIndex++;
+			} else {
+				System.out.println("Line number " + rawData.indexOf(rawFlow)
+						+ " doesn't seem to be a flow and has been ignored.");
 			}
 
 		}
@@ -223,14 +228,27 @@ public abstract class FlowOutput {
 		return 0;
 	}
 
-	public void printOutFlows() {
-		for (Flow flow : outputFlows) {
-			System.out.println("");
-			for (String string : flow) {
-				System.out.print(string + "\t");
-			}
+	public void printOutFlows(String filename) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(filename, "UTF-8");
+			for (Flow flow : outputFlows) {
 
+				// System.out.println("");
+				for (String string : flow) {
+					writer.print(string + "\t");
+					// System.out.print(string + "\t");
+				}
+				writer.println("");
+
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public ArrayList<String> getFeaturesUsed() {

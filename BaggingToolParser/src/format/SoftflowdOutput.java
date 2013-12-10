@@ -158,7 +158,7 @@ public class SoftflowdOutput extends FlowOutput {
 
 	@Override
 	public Integer ignoreLines() {
-		return 1;
+		return 0;
 	}
 
 }
