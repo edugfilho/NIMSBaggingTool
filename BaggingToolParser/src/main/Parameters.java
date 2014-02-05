@@ -8,6 +8,11 @@ public class Parameters {
 	 * Parameters used in the CUI. Reference:
 	 * http://beust.com/jcommander/#Parameter_validation
 	 */
+	@Parameter(names = "-resetdb", description = "Reset database ")
+	public Boolean resetDb = false;
+	
+	@Parameter(names = "-label", description = "Flow label to be used for classification purposes")
+	public String flowLabel = "";
 
 	@Parameter(names = {"-pcap", "-l1", "L1"}, description = "Start processing from .pcap file (must specify a tool)")
 	public Boolean startFromPcap = false;
@@ -29,7 +34,10 @@ public class Parameters {
 
 	@Parameter(names = { "-i", "-input" }, description = "Complete path of the file to be processed", required = true)
 	public String filePath;
+	
+	@Parameter(names = "-netconf", description = "Complete path of Netmate's configuration file")
+	public String netmateConf;
 
-	@Parameter(names = "--help", help = true)
-	public boolean help;
+	//@Parameter(names = "--help", help = true)
+	//public boolean help;
 }

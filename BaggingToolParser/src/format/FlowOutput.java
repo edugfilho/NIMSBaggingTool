@@ -34,8 +34,8 @@ public abstract class FlowOutput {
 	public static Integer FALSE = Integer.MIN_VALUE;
 
 	private ArrayList<Flow> outputFlows;
-	// TODO: Name must be always different between outputs
 	private String outputName;
+	private String outputLabel;
 
 	public FlowOutput() {
 		featuresPresent = new HashMap<String, Integer>();
@@ -55,6 +55,14 @@ public abstract class FlowOutput {
 			featuresPresent.put(s, FALSE);
 		}
 		outputFlows = new ArrayList<Flow>();
+	}
+
+	public String getOutputLabel() {
+		return outputLabel;
+	}
+
+	public void setOutputLabel(String outputLabel) {
+		this.outputLabel = outputLabel;
 	}
 
 	/*
@@ -90,8 +98,9 @@ public abstract class FlowOutput {
 	 * @return The flows from the file
 	 */
 	public ArrayList<Flow> getRawDataFromFile(File file, int fileLevel) {
-		
-		String splitToken = (fileLevel == 3) ? getOutputSeparator() : getSeparator();
+
+		String splitToken = (fileLevel == 3) ? getOutputSeparator()
+				: getSeparator();
 		ArrayList<Flow> data = new ArrayList<Flow>();
 		BufferedReader br;
 
@@ -127,7 +136,7 @@ public abstract class FlowOutput {
 
 	public void setOutputFlowsFromRawData(ArrayList<Flow> rawData, int fileLevel) {
 
-		if(fileLevel == 3){
+		if (fileLevel == 3) {
 			outputFlows = rawData;
 			return;
 		}
@@ -137,29 +146,35 @@ public abstract class FlowOutput {
 		// FeatIndex is the position of a flow inside the outputFlows
 		// int featIndex = 0;
 		for (Flow rawFlow : rawData) {
-			Flow tempFlow = new Flow();
-			rawIndex = 0;
+			if (!rawFlow.isEmpty()) {
+				Flow tempFlow = new Flow();
+				rawIndex = 0;
 
-			if (processRawFlow(rawFlow)) {
+				if (processRawFlow(rawFlow)) {
 
-				// At this point, rawFlow has modified pre-processed values. It
-				// only needs to be out of undesired feature values, the ones
-				// not
-				// specified for the output in question.
-				for (String featValue : rawFlow) {
+					// At this point, rawFlow has modified pre-processed values.
+					// It
+					// only needs to be out of undesired feature values, the
+					// ones
+					// not
+					// specified for the output in question.
+					for (String featValue : rawFlow) {
 
-					if (featuresPresent.containsValue(rawIndex)) {
-						tempFlow.add(featValue);
+						if (featuresPresent.containsValue(rawIndex)) {
+							tempFlow.add(featValue);
 
-						// outputFlows.get(featIndex).add(featValue);
+							// outputFlows.get(featIndex).add(featValue);
+						}
+						rawIndex++;
 					}
-					rawIndex++;
+					outputFlows.add(tempFlow);
+					// featIndex++;
+				} else {
+					System.out
+							.println("Line number "
+									+ rawData.indexOf(rawFlow)
+									+ " doesn't seem to be a flow and has been ignored.");
 				}
-				outputFlows.add(tempFlow);
-				// featIndex++;
-			} else {
-				System.out.println("Line number " + rawData.indexOf(rawFlow)
-						+ " doesn't seem to be a flow and has been ignored.");
 			}
 
 		}
@@ -176,9 +191,11 @@ public abstract class FlowOutput {
 
 	/* Do not ever call this function over a non-raw flow. I'm counting on it. */
 	public Boolean processRawFlow(Flow f) {
-		f = beforeProcessingRawFlow(f);
-		if (f == null) {
-			return Boolean.FALSE;
+		if (!f.isEmpty()) {
+			f = beforeProcessingRawFlow(f);
+			if (f == null) {
+				return Boolean.FALSE;
+			}
 		}
 
 		// The number of entries in featurePresent matches the size of the flow
@@ -251,10 +268,8 @@ public abstract class FlowOutput {
 			writer = new PrintWriter(filename, "UTF-8");
 			for (Flow flow : outputFlows) {
 
-				// System.out.println("");
 				for (String string : flow) {
 					writer.print(string + getOutputSeparator());
-					// System.out.print(string + "\t");
 				}
 				writer.println("");
 
@@ -268,9 +283,10 @@ public abstract class FlowOutput {
 
 	}
 
-	public String getOutputSeparator(){
+	public String getOutputSeparator() {
 		return "\t";
 	}
+
 	public ArrayList<String> getFeaturesUsed() {
 		return featuresUsed;
 	}
